@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Benny Jackson" />
+  <meta property="og:description" content="Creative Director. 20+ years. Campaigns, shows, worlds." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://res.cloudinary.com/dx8kswwgb/image/upload/v1779972513/image_drh1u3.png" />
+  
+  <title>Benny Jackson</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://player.vimeo.com/api/player.js"></script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --text: #f0ece4;
+      --text-muted: #7a7570;
+      --accent: #4ae7e7;
+      --accent-dim: #2a9b9b;
+      --border: rgba(255, 255, 255, 0.06);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.8;
+      letter-spacing: 0.01em;
+      min-height: 100vh;
+    }
+
+    /* ── FIXED NAV ── */
+    .fixed-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: #000000;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      z-index: 500;
+    }
+
+    .nav-logo {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    .hamburger {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-items: flex-end;
+    }
+
+    .hamburger-line {
+      display: block;
+      height: 1px;
+      background: var(--text);
+      transition: all 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+      transform-origin: right center;
+    }
+
+    .hamburger-line:nth-child(1) {
+      width: 28px;
+    }
+
+    .hamburger-line:nth-child(2) {
+      width: 20px;
+    }
+
+    .hamburger-line:nth-child(3) {
+      width: 24px;
+    }
+
+    .hamburger:hover .hamburger-line:nth-child(1) {
+      width: 24px;
+    }
+
+    .hamburger:hover .hamburger-line:nth-child(2) {
+      width: 28px;
+    }
+
+    .hamburger:hover .hamburger-line:nth-child(3) {
+      width: 20px;
+    }
+
+    .hamburger.is-open .hamburger-line:nth-child(1) {
+      width: 26px;
+      transform: rotate(-45deg) translateY(4.5px);
+    }
+
+    .hamburger.is-open .hamburger-line:nth-child(2) {
+      width: 0;
+      opacity: 0;
+    }
+
+    .hamburger.is-open .hamburger-line:nth-child(3) {
+      width: 26px;
+      transform: rotate(45deg) translateY(-4.5px);
+    }
+
+    /* ── MENU OVERLAY ── */
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.99);
+      backdrop-filter: blur(8px);
+      z-index: 400;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    .menu-overlay.is-visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .menu-panel {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 1;
+    }
+
+    .menu-items {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .menu-item {
+      display: block;
+    }
+
+    .menu-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text);
+      transition: all 0.3s ease;
+      padding: 16px 0;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.55s cubic-bezier(0.76, 0, 0.24, 1), transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+      transform: scaleX(1.30);
+      transform-origin: left center;
+    }
+
+    .menu-overlay.is-visible .menu-button {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .menu-button:nth-child(1) {
+      transition-delay: 0.12s;
+    }
+
+    .menu-button:nth-child(2) {
+      transition-delay: 0.20s;
+    }
+
+    .menu-button:hover {
+      color: var(--accent);
+    }
+
+    .menu-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .menu-content.is-visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .menu-content-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 24px;
+      transform: scaleX(1.30);
+      transform-origin: center;
+    }
+
+    .menu-content-text {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(240, 236, 196, 0.7);
+      margin-bottom: 24px;
+    }
+
+    .menu-close {
+      position: absolute;
+      top: 32px;
+      right: 32px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.2s;
+      z-index: 10;
+    }
+
+    .menu-close:hover {
+      color: var(--accent);
+    }
+
+    /* ── HERO ADJUSTMENT ── */
+    .hero-section {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-top: 0;
+    }
+
+    .hero-video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hero-video-container iframe {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transform: scale(1.1);
+      transform-origin: center;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(10, 10, 10, 0.6) 100%
+      );
+      z-index: 2;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    @keyframes fadeOutGreeting {
+      0% {
+        opacity: 1;
+      }
+      85% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .hero-greeting {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 8vw, 120px);
+      font-weight: 900;
+      line-height: 0.85;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text);
+      transform: scaleX(1.30);
+      transform-origin: center;
+      white-space: nowrap;
+      animation: fadeOutGreeting 4s ease-out forwards;
+    }
+
+    @media (max-width: 768px) {
+      .hero-greeting {
+        font-size: clamp(36px, 10vw, 72px);
+        transform: scaleX(1.15);
+      }
+    }
+
+    .unmute-button {
+      position: absolute;
+      bottom: 60px;
+      right: 48px;
+      width: 40px;
+      height: 40px;
+      background: rgba(74, 231, 231, 0.15);
+      border: 1px solid rgba(74, 231, 231, 0.3);
+      border-radius: 50%;
+      color: var(--accent);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      opacity: 1;
+      z-index: 4;
+      padding: 0;
+    }
+
+    .unmute-button img {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    .unmute-button:hover {
+      background: rgba(74, 231, 231, 0.25);
+      border-color: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .unmute-button.is-unmuted {
+      opacity: 0.4;
+      color: var(--text-muted);
+      pointer-events: all;
+    }
+
+    @media (max-width: 768px) {
+      .unmute-button {
+        width: 32px;
+        height: 32px;
+        bottom: 40px;
+        right: 24px;
+      }
+
+      .unmute-button img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    /* ── STATEMENT SECTION ── */
+    .statement-section {
+      width: 100%;
+      padding: 120px 48px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .statement-text {
+      font-size: 18px;
+      line-height: 1.9;
+      color: var(--text);
+      font-weight: 300;
+    }
+
+    .statement-text p {
+      margin-bottom: 20px;
+    }
+
+    .statement-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+      .statement-section {
+        padding: 80px 24px;
+      }
+      .statement-text {
+        font-size: 16px;
+      }
+    }
+
+    /* ── NAVIGATION SECTIONS ── */
+    .nav-sections {
+      width: 100%;
+      padding: 120px 48px 180px 280px;
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .nav-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .nav-section-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .nav-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      list-style: none;
+    }
+
+    .nav-item {
+      display: block;
+    }
+
+    .nav-item:last-child {
+      border-bottom: none;
+    }
+
+    .nav-link {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      padding: 20px 0;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      transform: scaleX(1.30);
+      transform-origin: left;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+      padding-left: 8px;
+    }
+
+    .nav-link-arrow {
+      font-size: 16px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: none;
+    }
+
+    .nav-link:hover .nav-link-arrow {
+      opacity: 1;
+    }
+
+    @media (max-width: 1000px) {
+      .nav-sections {
+        grid-template-columns: 1fr;
+        gap: 100px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-sections {
+        padding: 80px 24px 120px 120px;
+        gap: 80px;
+      }
+
+      .nav-section-title {
+        font-size: 9px;
+        margin-bottom: 12px;
+      }
+
+      .nav-link {
+        font-size: 22px;
+        padding: 16px 0;
+      }
+    }
+
+    /* ── SCROLL HINT ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      text-align: center;
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-hint-text {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 8px;
+    }
+
+    .scroll-hint-icon {
+      display: block;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        transform: translateX(-50%) translateY(8px);
+      }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 40px 48px;
+      text-align: center;
+      max-width: 100%;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      footer {
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- FIXED NAV -->
+<nav class="fixed-nav">
+  <img src="https://res.cloudinary.com/dx8kswwgb/image/upload/v1781279992/Comp-1_2_qhz8y9.gif" alt="Benny Jackson" class="nav-logo">
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </button>
+</nav>
+
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menuOverlay">
+  <button class="menu-close" id="menuClose">✕</button>
+
+  <div class="menu-panel">
+    <ul class="menu-items" id="menuItems">
+      <li class="menu-item">
+        <button class="menu-button" data-section="about">About</button>
+      </li>
+      <li class="menu-item">
+        <button class="menu-button" data-section="contact">Contact</button>
+      </li>
+    </ul>
+  </div>
+
+  <div class="menu-content" id="about-content">
+    <h2 class="menu-content-title">About</h2>
+    <div class="menu-content-text" style="text-align: left; max-width: 600px; margin: 0 auto;">
+      <p style="margin-bottom: 16px;">I'm a Creative Director. Spent 20+ years at agencies that actually pushed (TBWA\Media Arts Lab, and others), working on brands that refused to settle. Apple, State Farm, Cup Noodles, Carl's Jr., DISH. The thread through everything: ideas that feel discovered, not manufactured.</p>
+
+      <p style="margin-bottom: 16px;">For the past year I've been building something called Masters Of Sight. It started as this nagging feeling that there weren't enough spaces celebrating the people who genuinely move the needle in visual culture. So I started cataloging photographers, cinematographers, directors, designers, game developers whose work made me stop and think differently. It's grown into a curated archive of the visual architects I genuinely believe in. Not exhaustive. Just ruthlessly intentional. If you care about craft, it's worth spending time there.</p>
+
+      <p style="margin-bottom: 16px;">I shoot photography as a way to stay present. Forces you to actually see light and moment instead of just moving through the world.</p>
+
+      <p style="margin-bottom: 16px;">Woodworking is my other creative language. Tables, bowls, benches, cups, shelves, anything I can dream up really. It's a completely different kind of problem-solving than advertising or writing, which is exactly why I do it. Different form, same creative hunger. Keeps you humble. You can't bullshit wood.</p>
+
+      <p style="margin-bottom: 16px;">I'm also deep in developing an original television series. Big world. Ambitious ideas. The kind of thing you think about at 3am and can't stop.</p>
+
+      <p>Everything creative I do comes down to the same principle: vision, systems thinking, intentional tool use. The medium changes. The rigor doesn't.</p>
+    </div>
+  </div>
+
+  <div class="menu-content" id="contact-content">
+    <h2 class="menu-content-title">Contact</h2>
+    <p class="menu-content-text">Have a project worth making? A collaboration worth exploring? I want to hear from you.</p>
+    <p class="menu-content-text" style="margin-top: 20px; color: rgba(232,224,208,0.5); font-size: 14px;">Benny Jackson</p>
+    <a href="mailto:bennyjackson@me.com" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">bennyjackson@me.com</a>
+    <p style="margin-top: 32px; margin-bottom: 12px;">
+      <a href="/resume.pdf" download style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">↓ Download Resume</a>
+    </p>
+  </div>
+</div>
+
+<!-- HERO SECTION -->
+<section class="hero-section" id="heroSection">
+  <div class="hero-video-container">
+    <iframe
+      src="https://player.vimeo.com/video/1200811538?autoplay=1&badge=0&autopause=0&muted=1&controls=0&loop=1&player_id=0&app_id=58479"
+      frameborder="0"
+      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      title="Benny Jackson Reel 2026"
+    ></iframe>
+  </div>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-greeting" id="greeting"></div>
+  </div>
+
+  <button class="unmute-button" id="unmuteButton" aria-label="Unmute video">
+    <img id="volumeIcon" src="https://res.cloudinary.com/dx8kswwgb/image/upload/v1781298456/off_azlk8m.png" alt="Volume">
+  </button>
+
+  <div class="scroll-hint">
+    <div class="scroll-hint-text">Scroll to explore</div>
+    <div class="scroll-hint-icon">↓</div>
+  </div>
+</section>
+
+<!-- STATEMENT SECTION -->
+<section class="statement-section">
+  <div class="statement-text">
+    <p>Twenty years making work that doesn't feel like work. Campaigns, shows, worlds. Including time inside Apple's creative universe at TBWA\Media Arts Lab, where the standard wasn't high. It was absolute.</p>
+    <p>I think at the intersection of fandom, narrative, and culture. That's where brands stop being purchased and start being believed in.</p>
+    <p>I also built Masters Of Sight from scratch. A curated archive of the world's greatest visual architects, now one of the most distinctive creative reference platforms on the internet. Because if you want something to exist you have to make it yourself.</p>
+    <p>Currently available for the right opportunity.</p>
+  </div>
+</section>
+
+<!-- NAVIGATION SECTIONS -->
+<section class="nav-sections">
+  <div class="nav-section">
+    <h2 class="nav-section-title">Advertising</h2>
+    <ul class="nav-items">
+      <li class="nav-item">
+        <a href="advertising/apple.html" class="nav-link">
+          <span>Apple</span>
+          <span class="nav-link-arrow">→</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="advertising/state-farm.html" class="nav-link">
+          <span>State Farm</span>
+          <span class="nav-link-arrow">→</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="advertising/cup-noodles.html" class="nav-link">
+          <span>Cup Noodles</span>
+          <span class="nav-link-arrow">→</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="advertising/carls-jr.html" class="nav-link">
+          <span>Carl's Jr.</span>
+          <span class="nav-link-arrow">→</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="advertising/dish.html" class="nav-link">
+          <span>DISH</span>
+          <span class="nav-link-arrow">→</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="nav-section">
+    <h2 class="nav-section-title">Personal</h2>
+    <ul class="nav-items">
+      <li class="nav-item">
+        <a href="personal/masters-of-sight.html" class="nav-link">
+          <span>Masters Of Sight</span>
+          <span class="nav-link-arrow">→</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="personal/photography.html" class="nav-link">
+          <span>Photography</span>
+          <span class="nav-link-arrow">→</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-copy">Benny Jackson · Creative Director</p>
+</footer>
+
+<script>
+  // Dynamic greeting based on time of day
+  function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 18) return 'Good Afternoon';
+    return 'Good Evening';
+  }
+
+  document.getElementById('greeting').textContent = getGreeting();
+
+  // Unmute button handler with mute/unmute toggle
+  const unmuteButton = document.getElementById('unmuteButton');
+  const volumeIcon = document.getElementById('volumeIcon');
+  const heroSection = document.getElementById('heroSection');
+  const iframe = heroSection.querySelector('iframe');
+  let isMuted = true;
+  
+  const offIcon = 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781298456/off_azlk8m.png';
+  const onIcon = 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781298458/on_uxu72e.png';
+  
+  if (iframe && window.Vimeo) {
+    const player = new Vimeo.Player(iframe);
+    
+    unmuteButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isMuted) {
+        player.setVolume(1).then(() => {
+          isMuted = false;
+          volumeIcon.src = onIcon;
+          unmuteButton.classList.add('is-unmuted');
+        }).catch(err => console.error('Unmute failed:', err));
+      } else {
+        player.setVolume(0).then(() => {
+          isMuted = true;
+          volumeIcon.src = offIcon;
+          unmuteButton.classList.remove('is-unmuted');
+        }).catch(err => console.error('Mute failed:', err));
+      }
+    });
+  }
+
+  // Fade out scroll hint on scroll
+  window.addEventListener('scroll', () => {
+    const hint = document.querySelector('.scroll-hint');
+    const scrollPercent = window.scrollY / window.innerHeight;
+    hint.style.opacity = Math.max(0, 1 - scrollPercent * 3);
+  });
+
+  // Menu functionality
+  const hamburger = document.getElementById('hamburger');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const menuClose = document.getElementById('menuClose');
+  const menuButtons = document.querySelectorAll('[data-section]');
+  
+  let isOpen = false;
+  let activeSection = null;
+
+  function openMenu() {
+    isOpen = true;
+    hamburger.classList.add('is-open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    menuOverlay.classList.add('is-visible');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    isOpen = false;
+    hamburger.classList.remove('is-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    menuOverlay.classList.remove('is-visible');
+    document.body.style.overflow = '';
+    clearActiveSection();
+  }
+
+  function clearActiveSection() {
+    document.querySelectorAll('.menu-content').forEach(c => c.classList.remove('is-visible'));
+    document.getElementById('menuItems').style.display = 'flex';
+    document.getElementById('menuItems').style.opacity = '1';
+    activeSection = null;
+  }
+
+  function showSection(sectionId) {
+    const content = document.getElementById(sectionId + '-content');
+    const button = document.querySelector(`[data-section="${sectionId}"]`);
+    
+    if (activeSection === sectionId) {
+      clearActiveSection();
+      return;
+    }
+
+    document.getElementById('menuItems').style.display = 'none';
+    document.querySelectorAll('.menu-content').forEach(c => c.classList.remove('is-visible'));
+    
+    setTimeout(() => {
+      content.classList.add('is-visible');
+    }, 200);
+    
+    activeSection = sectionId;
+  }
+
+  hamburger.addEventListener('click', () => {
+    if (isOpen) closeMenu();
+    else openMenu();
+  });
+
+  menuClose.addEventListener('click', closeMenu);
+
+  menuOverlay.addEventListener('click', (e) => {
+    if (e.target === menuOverlay) closeMenu();
+  });
+
+  menuButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showSection(btn.dataset.section);
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen) closeMenu();
+  });
+</script>
+
+</body>
+</html>
