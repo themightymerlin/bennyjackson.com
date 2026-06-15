@@ -8,7 +8,7 @@
   <meta property="og:description" content="Creative Director. 20+ years. Campaigns, shows, worlds." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://res.cloudinary.com/dx8kswwgb/image/upload/v1779972513/image_drh1u3.png" />
-  
+
   <title>Benny Jackson</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,6 +36,18 @@
       scroll-behavior: smooth;
     }
 
+    html {
+      overflow-x: clip;
+      overscroll-behavior-x: none;
+    }
+    body {
+      overflow-x: clip;
+      width: 100%;
+      max-width: 100%;
+      position: relative;
+      overscroll-behavior-x: none;
+    }
+
     body {
       background: var(--bg);
       color: var(--text);
@@ -44,10 +56,17 @@
       font-size: 14px;
       line-height: 1.8;
       letter-spacing: 0.01em;
-      min-height: 100vh; overflow-x: hidden;
+      min-height: 100vh;
     }
 
-    /* ── FIXED NAV ── */
+    /* ── VIEW SYSTEM (the whole trick — one of these is visible at a time) ── */
+    .view { display: none; }
+    .view.is-active { display: block; }
+
+    /* ============================================================
+       HOME VIEW
+       ============================================================ */
+
     .fixed-nav {
       position: fixed;
       top: 0;
@@ -67,8 +86,22 @@
       height: 40px;
       width: auto;
       display: block;
+      cursor: pointer;
     }
-
+    .nav-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleX(1.30);
+  transform-origin: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+    }
     .hamburger {
       background: none;
       border: none;
@@ -88,40 +121,22 @@
       transform-origin: right center;
     }
 
-    .hamburger-line:nth-child(1) {
-      width: 28px;
-    }
+    .hamburger-line:nth-child(1) { width: 28px; }
+    .hamburger-line:nth-child(2) { width: 20px; }
+    .hamburger-line:nth-child(3) { width: 24px; }
 
-    .hamburger-line:nth-child(2) {
-      width: 20px;
-    }
-
-    .hamburger-line:nth-child(3) {
-      width: 24px;
-    }
-
-    .hamburger:hover .hamburger-line:nth-child(1) {
-      width: 24px;
-    }
-
-    .hamburger:hover .hamburger-line:nth-child(2) {
-      width: 28px;
-    }
-
-    .hamburger:hover .hamburger-line:nth-child(3) {
-      width: 20px;
-    }
+    .hamburger:hover .hamburger-line:nth-child(1) { width: 24px; }
+    .hamburger:hover .hamburger-line:nth-child(2) { width: 28px; }
+    .hamburger:hover .hamburger-line:nth-child(3) { width: 20px; }
 
     .hamburger.is-open .hamburger-line:nth-child(1) {
       width: 26px;
       transform: rotate(-45deg) translateY(4.5px);
     }
-
     .hamburger.is-open .hamburger-line:nth-child(2) {
       width: 0;
       opacity: 0;
     }
-
     .hamburger.is-open .hamburger-line:nth-child(3) {
       width: 26px;
       transform: rotate(45deg) translateY(-4.5px);
@@ -163,9 +178,7 @@
       list-style: none;
     }
 
-    .menu-item {
-      display: block;
-    }
+    .menu-item { display: block; }
 
     .menu-button {
       background: none;
@@ -177,31 +190,21 @@
       letter-spacing: -0.02em;
       text-transform: uppercase;
       color: var(--text);
-      transition: all 0.3s ease;
       padding: 16px 0;
       opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.55s cubic-bezier(0.76, 0, 0.24, 1), transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+      transition: opacity 0.55s cubic-bezier(0.76, 0, 0.24, 1), transform 0.55s cubic-bezier(0.76, 0, 0.24, 1), color 0.3s ease;
       transform: scaleX(1.30);
       transform-origin: left center;
     }
 
     .menu-overlay.is-visible .menu-button {
       opacity: 1;
-      transform: translateY(0);
+      transform: scaleX(1.30) translateY(0);
     }
 
-    .menu-button:nth-child(1) {
-      transition-delay: 0.12s;
-    }
-
-    .menu-button:nth-child(2) {
-      transition-delay: 0.20s;
-    }
-
-    .menu-button:hover {
-      color: var(--accent);
-    }
+    .menu-button:nth-child(1) { transition-delay: 0.12s; }
+    .menu-button:nth-child(2) { transition-delay: 0.20s; }
+    .menu-button:hover { color: var(--accent); }
 
     .menu-content {
       position: absolute;
@@ -254,28 +257,24 @@
       z-index: 10;
     }
 
-    .menu-close:hover {
-      color: var(--accent);
-    }
+    .menu-close:hover { color: var(--accent); }
 
-    /* ── HERO ADJUSTMENT ── */
+    /* ── HERO (mobile fix #2: flush to top, svh height) ── */
     .hero-section {
       position: relative;
       width: 100%;
       height: 100vh;
+      height: 100svh;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      margin-top: 0;
+      margin-top: -64px;
     }
 
     .hero-video-container {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       width: 100%;
       height: 100%;
       z-index: 1;
@@ -292,8 +291,7 @@
 
     .hero-overlay {
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100%;
       height: 100%;
       background: linear-gradient(
@@ -316,15 +314,9 @@
     }
 
     @keyframes fadeOutGreeting {
-      0% {
-        opacity: 1;
-      }
-      85% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-      }
+      0% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { opacity: 0; }
     }
 
     .hero-greeting {
@@ -339,14 +331,6 @@
       transform-origin: center;
       white-space: nowrap;
       animation: fadeOutGreeting 4s ease-out forwards;
-    }
-
-    @media (max-width: 768px) {
-      .hero-section { margin-top: -64px !important; height: calc(100vh + 64px); margin-top: -64px; }
-      .hero-greeting {
-        font-size: clamp(36px, 10vw, 72px);
-        transform: scaleX(1.15);
-      }
     }
 
     .unmute-button {
@@ -387,54 +371,6 @@
       pointer-events: all;
     }
 
-    @media (max-width: 768px) {
-      .hero-section { margin-top: -64px !important; height: calc(100vh + 64px); margin-top: -64px; }
-      .unmute-button {
-        width: 32px;
-        height: 32px;
-        bottom: 40px;
-        right: 24px;
-      }
-
-      .unmute-button img {
-        width: 16px;
-        height: 16px;
-      }
-    }
-
-    /* ── STATEMENT SECTION ── */
-    .statement-section {
-      width: 100%;
-      padding: 120px 48px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .statement-text {
-      font-size: 18px;
-      line-height: 1.9;
-      color: var(--text);
-      font-weight: 300;
-    }
-
-    .statement-text p {
-      margin-bottom: 20px;
-    }
-
-    .statement-text p:last-child {
-      margin-bottom: 0;
-    }
-
-    @media (max-width: 768px) {
-      .hero-section { margin-top: -64px !important; height: calc(100vh + 64px); margin-top: -64px; }
-      .statement-section {
-        padding: 80px 24px;
-      }
-      .statement-text {
-        font-size: 16px;
-      }
-    }
-
     /* ── NAVIGATION SECTIONS ── */
     .nav-sections {
       width: 100%;
@@ -471,13 +407,8 @@
       list-style: none;
     }
 
-    .nav-item {
-      display: block;
-    }
-
-    .nav-item:last-child {
-      border-bottom: none;
-    }
+    .nav-item { display: block; }
+    .nav-item:last-child { border-bottom: none; }
 
     .nav-link {
       font-family: 'Bebas Neue', sans-serif;
@@ -496,6 +427,7 @@
       gap: 16px;
       transform: scaleX(1.30);
       transform-origin: left;
+      cursor: pointer;
     }
 
     .nav-link:hover {
@@ -510,34 +442,7 @@
       display: none;
     }
 
-    .nav-link:hover .nav-link-arrow {
-      opacity: 1;
-    }
-
-    @media (max-width: 1000px) {
-      .nav-sections {
-        grid-template-columns: 1fr;
-        gap: 100px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .hero-section { margin-top: -64px !important; height: calc(100vh + 64px); margin-top: -64px; }
-      .nav-sections {
-        padding: 80px 24px 120px 120px;
-        gap: 80px;
-      }
-
-      .nav-section-title {
-        font-size: 9px;
-        margin-bottom: 12px;
-      }
-
-      .nav-link {
-        font-size: 22px;
-        padding: 16px 0;
-      }
-    }
+    .nav-link:hover .nav-link-arrow { opacity: 1; }
 
     /* ── SCROLL HINT ── */
     .scroll-hint {
@@ -565,12 +470,8 @@
     }
 
     @keyframes bounce {
-      0%, 100% {
-        transform: translateX(-50%) translateY(0);
-      }
-      50% {
-        transform: translateX(-50%) translateY(8px);
-      }
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
     }
 
     /* ── FOOTER ── */
@@ -588,19 +489,659 @@
       text-transform: uppercase;
     }
 
-    @media (max-width: 768px) {
-      .hero-section { margin-top: -64px !important; height: calc(100vh + 64px); margin-top: -64px; }
-      footer {
-        padding: 32px 24px;
+    /* ============================================================
+       CASE STUDY VIEWS (advertising) — generated from data below
+       ============================================================ */
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .header-back {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 900;
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  display: inline-block;
+  transform: scaleX(1.30);
+  transform-origin: left center;
+  white-space: nowrap;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.header-back:hover {
+  color: var(--accent);
+}
+.personal-back {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 900;
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  display: inline-block;
+  transform: scaleX(1.30);
+  transform-origin: left center;
+  white-space: nowrap;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 12px 0;
+}
+.personal-back:hover {
+  color: var(--accent);
+}
+  .header-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleX(1.30);
+  transform-origin: center;
+
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+
+  color: var(--text);
+  white-space: nowrap;
+}
+
+    .header-spacer { width: 60px; }
+
+    .case-study-view main { padding-top: 60px; }
+
+    .grid-view {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      padding: 120px 48px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .grid-view .video-card:nth-child(-n+2) { grid-column: span 3; }
+    .grid-view .video-card:nth-child(n+3) { grid-column: span 2; }
+
+    .video-card {
+      aspect-ratio: 16 / 9;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .video-card:hover {
+      border-color: var(--accent);
+      transform: scale(1.02);
+    }
+
+    .video-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-card-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(10, 10, 10, 0.95), transparent);
+      padding: 32px 24px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .play-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 64px;
+      height: 64px;
+      background: rgba(74, 231, 231, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.3s ease;
+      font-size: 24px;
+    }
+
+    .video-card:hover .play-icon {
+      opacity: 1;
+      background: rgba(74, 231, 231, 0.4);
+    }
+
+    .player-view {
+      display: none;
+      min-height: 100vh;
+      background: var(--bg);
+      padding: 120px 48px 48px;
+    }
+
+    .player-view.is-active {
+      display: block;
+      animation: fadeIn 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .video-player-container {
+      max-width: 1400px;
+      margin: 0 auto 80px;
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .video-player-container iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .filmstrip-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .filmstrip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding-bottom: 16px;
+    }
+
+    .filmstrip::-webkit-scrollbar { height: 4px; }
+    .filmstrip::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 2px;
+    }
+    .filmstrip::-webkit-scrollbar-thumb {
+      background: rgba(74, 231, 231, 0.3);
+      border-radius: 2px;
+    }
+    .filmstrip::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    .filmstrip-item {
+      flex: 0 0 auto;
+      width: 200px;
+      aspect-ratio: 16 / 9;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .filmstrip-item:hover { border-color: var(--accent); }
+
+    .filmstrip-item.is-active {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(74, 231, 231, 0.3);
+    }
+
+    .filmstrip-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .filmstrip-item-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(10, 10, 10, 0.95), transparent);
+      padding: 16px 12px 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .filmstrip-item:hover .filmstrip-item-label { opacity: 1; }
+
+    /* ============================================================
+       PERSONAL VIEWS (shared bits)
+       ============================================================ */
+
+    .personal-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    personal-title {
+
+  position: absolute;
+
+  left: 50%;
+
+  transform: translateX(-50%) scaleX(1.30);
+
+  transform-origin: center;
+
+  font-family: 'Bebas Neue', sans-serif;
+
+  font-size: 18px;
+
+  font-weight: 900;
+
+  letter-spacing: -0.02em;
+
+  text-transform: uppercase;
+
+  color: var(--text);
+
+  white-space: nowrap;
+
+}
+
+    /* ── MASTERS OF SIGHT VIEW ── */
+    .mos-intro {
+      padding: 140px 48px 100px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .intro-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .mos-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 900;
+      font-size: clamp(48px, 8vw, 90px);
+      line-height: 0.85;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      display: inline-block;
+      transform: scaleX(1.30);
+      transform-origin: left center;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+
+    .mos-body {
+      font-size: 16px;
+      color: var(--text);
+      max-width: 800px;
+      line-height: 1.9;
+    }
+
+    .mos-body p { margin-bottom: 20px; }
+    .mos-body p:last-child { margin-bottom: 0; }
+
+    .screenshot-wrapper {
+      position: relative;
+      width: 100%;
+      padding: 60px 0 0 0;
+      overflow: hidden;
+    }
+
+    .screenshot-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      aspect-ratio: 1600 / 1000;
+    }
+
+    .screenshot-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .screenshot-fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 65%;
+      background: linear-gradient(to bottom, rgba(10, 10, 10, 0), rgba(10, 10, 10, 0.98));
+      pointer-events: none;
+    }
+
+    .cta-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 60px 48px 48px;
+      text-align: center;
+      min-height: 400px;
+    }
+
+    .cta-text {
+      font-size: 16px;
+      color: var(--text);
+      max-width: 600px;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 40px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      color: var(--bg);
+    }
+
+    /* ── PHOTOGRAPHY VIEW ── */
+    .photo-intro {
+      padding: 120px 48px 80px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .intro-statement {
+      font-size: 18px;
+      color: var(--text);
+      max-width: 700px;
+      line-height: 1.9;
+      font-weight: 300;
+    }
+
+    .gallery {
+  padding: 60px 48px 100px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2px;
+      grid-auto-rows: 300px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.3s ease;
+      filter: brightness(0.95);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.03);
+      filter: brightness(1);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.95);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      padding: 24px;
+    }
+
+    .lightbox.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .lightbox-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      width: auto;
+      height: auto;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 28px;
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px;
+      transition: color 0.2s;
+      z-index: 10;
+    }
+
+    .lightbox-close:hover { color: var(--text); }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 20px;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      border-radius: 2px;
+    }
+
+    .lightbox-nav:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent);
+    }
+
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+
+    .lightbox-counter {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+
+    @media (max-width: 1000px) {
+      .nav-sections {
+        grid-template-columns: 1fr;
+        gap: 100px;
       }
+      .grid-view { grid-template-columns: repeat(4, 1fr); }
+      .grid-view .video-card:nth-child(-n+2) { grid-column: span 2; }
+      .grid-view .video-card:nth-child(n+3) { grid-column: span 4; }
+    }
+
+    @media (max-width: 900px) {
+      .mos-intro { padding: 100px 48px 100px; }
+      .cta-overlay { padding: 50px 32px 40px; min-height: 320px; }
+      .personal-nav { padding: 0 32px; }
+      .photo-intro { padding: 100px 32px 60px; }
+      .gallery { padding: 0 32px 80px; }
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-auto-rows: 250px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-greeting {
+        font-size: clamp(36px, 10vw, 72px);
+        transform: scaleX(1.15);
+      }
+      .unmute-button {
+        width: 32px;
+        height: 32px;
+        bottom: 40px;
+        right: 24px;
+      }
+      .unmute-button img { width: 16px; height: 16px; }
+
+      .nav-sections {
+        padding: 80px 24px 120px 120px;
+        gap: 80px;
+      }
+      .nav-section-title { font-size: 9px; margin-bottom: 12px; }
+      .nav-link { font-size: 22px; padding: 16px 0; }
+
+      .header { padding: 0 24px; }
+
+      .grid-view {
+        grid-template-columns: 1fr;
+        padding: 100px 24px;
+        gap: 8px;
+      }
+      .grid-view .video-card:nth-child(-n+2),
+      .grid-view .video-card:nth-child(n+3) { grid-column: span 1; }
+
+      .player-view { padding: 100px 24px 24px; }
+      .video-player-container { margin-bottom: 60px; }
+      .filmstrip-item { width: 150px; }
+
+      footer { padding: 32px 24px; }
+    }
+
+    @media (max-width: 600px) {
+      .mos-intro { padding: 100px 20px 60px; }
+      .mos-title { font-size: clamp(36px, 10vw, 60px); }
+      .mos-body { font-size: 14px; }
+      .cta-overlay { padding: 40px 20px 32px; min-height: 280px; }
+      .cta-text { font-size: 14px; margin-bottom: 24px; }
+      .cta-button { font-size: 10px; padding: 12px 32px; }
+      .personal-nav { padding: 0 20px; }
+
+      .photo-intro { padding: 100px 20px 50px; }
+      .intro-statement { font-size: 16px; }
+      .gallery { padding: 0 20px 60px; }
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        grid-auto-rows: 180px;
+      }
+      .lightbox-nav { width: 40px; height: 40px; font-size: 16px; }
+      .lightbox-prev { left: 12px; }
+      .lightbox-next { right: 12px; }
     }
   </style>
 </head>
 <body>
 
-<!-- FIXED NAV -->
-<nav class="fixed-nav">
-  <img src="https://res.cloudinary.com/dx8kswwgb/image/upload/v1781279992/Comp-1_2_qhz8y9.gif" alt="Benny Jackson" class="nav-logo">
+<!-- ============================================================
+     HOME VIEW
+     ============================================================ -->
+<section class="view is-active" id="view-home">
+
+ <nav class="fixed-nav">
+  <img src="https://res.cloudinary.com/dx8kswwgb/image/upload/v1781279992/Comp-1_2_qhz8y9.gif" alt="Benny Jackson" class="nav-logo" data-view="home">
+
+  <div class="nav-title" data-view="home">
+    Benny Jackson
+  </div>
+
   <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
     <span class="hamburger-line"></span>
     <span class="hamburger-line"></span>
@@ -608,174 +1149,536 @@
   </button>
 </nav>
 
-<!-- MENU OVERLAY -->
-<div class="menu-overlay" id="menuOverlay">
-  <button class="menu-close" id="menuClose">✕</button>
+  <!-- MENU OVERLAY -->
+  <div class="menu-overlay" id="menuOverlay">
+    <button class="menu-close" id="menuClose">✕</button>
 
-  <div class="menu-panel">
-    <ul class="menu-items" id="menuItems">
-      <li class="menu-item">
-        <button class="menu-button" data-section="about">About</button>
-      </li>
-      <li class="menu-item">
-        <button class="menu-button" data-section="contact">Contact</button>
-      </li>
-    </ul>
-  </div>
+    <div class="menu-panel">
+      <ul class="menu-items" id="menuItems">
+        <li class="menu-item"><button class="menu-button" data-section="about">About</button></li>
+        <li class="menu-item"><button class="menu-button" data-section="contact">Contact</button></li>
+      </ul>
+    </div>
 
-  <div class="menu-content" id="about-content">
-    <h2 class="menu-content-title">About</h2>
-    <div class="menu-content-text" style="text-align: left; max-width: 600px; margin: 0 auto;">
-      <p style="margin-bottom: 16px;">I'm a Creative Director. Spent 20+ years at agencies that actually pushed (TBWA\Media Arts Lab, and others), working on brands that refused to settle. Apple, State Farm, Cup Noodles, Carl's Jr., DISH. The thread through everything: ideas that feel discovered, not manufactured.</p>
+    <div class="menu-content" id="about-content">
+      <h2 class="menu-content-title">About</h2>
+      <div class="menu-content-text" style="text-align: left; max-width: 600px; margin: 0 auto;">
+        <p style="margin-bottom: 16px;">I'm a Creative Director. Spent 20+ years at agencies that actually pushed (TBWA\Media Arts Lab, and others), working on brands that refused to settle. Apple, State Farm, Cup Noodles, Carl's Jr., DISH. The thread through everything: ideas that feel discovered, not manufactured.</p>
+        <p style="margin-bottom: 16px;">For the past year I've been building something called Masters Of Sight. It started as this nagging feeling that there weren't enough spaces celebrating the people who genuinely move the needle in visual culture. So I started cataloging photographers, cinematographers, directors, designers, game developers whose work made me stop and think differently. It's grown into a curated archive of the visual architects I genuinely believe in. Not exhaustive. Just ruthlessly intentional. If you care about craft, it's worth spending time there.</p>
+        <p style="margin-bottom: 16px;">I shoot photography as a way to stay present. Forces you to actually see light and moment instead of just moving through the world.</p>
+        <p style="margin-bottom: 16px;">Woodworking is my other creative language. Tables, bowls, benches, cups, shelves, anything I can dream up really. It's a completely different kind of problem-solving than advertising or writing, which is exactly why I do it. Different form, same creative hunger. Keeps you humble. You can't bullshit wood.</p>
+        <p style="margin-bottom: 16px;">I'm also deep in developing an original television series. Big world. Ambitious ideas. The kind of thing you think about at 3am and can't stop.</p>
+        <p>Everything creative I do comes down to the same principle: vision, systems thinking, intentional tool use. The medium changes. The rigor doesn't.</p>
+      </div>
+    </div>
 
-      <p style="margin-bottom: 16px;">For the past year I've been building something called Masters Of Sight. It started as this nagging feeling that there weren't enough spaces celebrating the people who genuinely move the needle in visual culture. So I started cataloging photographers, cinematographers, directors, designers, game developers whose work made me stop and think differently. It's grown into a curated archive of the visual architects I genuinely believe in. Not exhaustive. Just ruthlessly intentional. If you care about craft, it's worth spending time there.</p>
-
-      <p style="margin-bottom: 16px;">I shoot photography as a way to stay present. Forces you to actually see light and moment instead of just moving through the world.</p>
-
-      <p style="margin-bottom: 16px;">Woodworking is my other creative language. Tables, bowls, benches, cups, shelves, anything I can dream up really. It's a completely different kind of problem-solving than advertising or writing, which is exactly why I do it. Different form, same creative hunger. Keeps you humble. You can't bullshit wood.</p>
-
-      <p style="margin-bottom: 16px;">I'm also deep in developing an original television series. Big world. Ambitious ideas. The kind of thing you think about at 3am and can't stop.</p>
-
-      <p>Everything creative I do comes down to the same principle: vision, systems thinking, intentional tool use. The medium changes. The rigor doesn't.</p>
+    <div class="menu-content" id="contact-content">
+      <h2 class="menu-content-title">Contact</h2>
+      <p class="menu-content-text">If you've got something worth making, let's talk.</p>
+      <a href="mailto:bennyjackson@me.com" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">bennyjackson@me.com</a>
+      <p style="margin-top: 32px; margin-bottom: 12px;">
+        <a href="resume.pdf" download="Benny Jackson Resume.pdf" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">↓ Download Resume</a>
+      </p>
     </div>
   </div>
 
-  <div class="menu-content" id="contact-content">
-    <h2 class="menu-content-title">Contact</h2>
-    <p class="menu-content-text">If you've got something worth making, let's talk.</p>
-    <a href="mailto:bennyjackson@me.com" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">bennyjackson@me.com</a>
-    <p style="margin-top: 32px; margin-bottom: 12px;">
-      <a href="resume.pdf" download="Benny Jackson Resume.pdf" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">↓ Download Resume</a>
-    </p>
-  </div>
-</div>
+  <!-- HERO -->
+  <section class="hero-section" id="heroSection">
+    <div class="hero-video-container">
+      <iframe
+        id="heroIframe"
+        src="https://player.vimeo.com/video/1200811538?autoplay=1&badge=0&autopause=0&muted=1&controls=0&loop=1&player_id=0&app_id=58479"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        title="Benny Jackson Reel 2026"
+      ></iframe>
+    </div>
 
-<!-- HERO SECTION -->
-<section class="hero-section" id="heroSection">
-  <div class="hero-video-container">
-    <iframe
-      src="https://player.vimeo.com/video/1200811538?autoplay=1&badge=0&autopause=0&muted=1&controls=0&loop=1&player_id=0&app_id=58479"
-      frameborder="0"
-      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      title="Benny Jackson Reel 2026"
-    ></iframe>
-  </div>
+    <div class="hero-overlay"></div>
 
-  <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-greeting" id="greeting"></div>
+    </div>
 
-  <div class="hero-content">
-    <div class="hero-greeting" id="greeting"></div>
-  </div>
+    <button class="unmute-button" id="unmuteButton" aria-label="Unmute video">
+      <img id="volumeIcon" src="https://res.cloudinary.com/dx8kswwgb/image/upload/v1781298456/off_azlk8m.png" alt="Volume">
+    </button>
 
-  <button class="unmute-button" id="unmuteButton" aria-label="Unmute video">
-    <img id="volumeIcon" src="https://res.cloudinary.com/dx8kswwgb/image/upload/v1781298456/off_azlk8m.png" alt="Volume">
-  </button>
+    <div class="scroll-hint">
+      <div class="scroll-hint-text">Scroll to explore</div>
+      <div class="scroll-hint-icon">↓</div>
+    </div>
+  </section>
 
-  <div class="scroll-hint">
-    <div class="scroll-hint-text">Scroll to explore</div>
-    <div class="scroll-hint-icon">↓</div>
-  </div>
+  <!-- NAVIGATION SECTIONS -->
+  <section class="nav-sections">
+    <div class="nav-section">
+      <h2 class="nav-section-title">Advertising</h2>
+      <!-- Advertising links are generated from the data below -->
+      <ul class="nav-items" id="advertising-list"></ul>
+    </div>
+
+    <div class="nav-section">
+      <h2 class="nav-section-title">Personal</h2>
+      <ul class="nav-items">
+        <li class="nav-item">
+          <a class="nav-link" data-view="masters-of-sight">
+            <span>Masters Of Sight</span>
+            <span class="nav-link-arrow">→</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-view="photography">
+            <span>Photography</span>
+            <span class="nav-link-arrow">→</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-copy">Benny Jackson · Creative Director</p>
+  </footer>
 </section>
 
-<!-- STATEMENT SECTION -->
+<!-- ============================================================
+     PERSONAL VIEW: MASTERS OF SIGHT
+     ============================================================ -->
+<section class="view personal-view" id="view-masters-of-sight">
+  <nav class="personal-nav">
+    <a class="personal-back" data-view="home">← Back</a>
 
-<!-- NAVIGATION SECTIONS -->
-<section class="nav-sections">
-  <div class="nav-section">
-    <h2 class="nav-section-title">Advertising</h2>
-    <ul class="nav-items">
-      <li class="nav-item">
-        <a href="advertising/apple.html" class="nav-link">
-          <span>Apple</span>
-          <span class="nav-link-arrow">→</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="advertising/state-farm.html" class="nav-link">
-          <span>State Farm</span>
-          <span class="nav-link-arrow">→</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="advertising/cup-noodles.html" class="nav-link">
-          <span>Cup Noodles</span>
-          <span class="nav-link-arrow">→</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="advertising/carls-jr.html" class="nav-link">
-          <span>Carl's Jr.</span>
-          <span class="nav-link-arrow">→</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="advertising/dish.html" class="nav-link">
-          <span>DISH</span>
-          <span class="nav-link-arrow">→</span>
-        </a>
-      </li>
-    </ul>
-  </div>
+    <h1 class="header-title">
+      Masters Of Sight
+    </h1>
 
-  <div class="nav-section">
-    <h2 class="nav-section-title">Personal</h2>
-    <ul class="nav-items">
-      <li class="nav-item">
-        <a href="personal/masters-of-sight.html" class="nav-link">
-          <span>Masters Of Sight</span>
-          <span class="nav-link-arrow">→</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="personal/photography.html" class="nav-link">
-          <span>Photography</span>
-          <span class="nav-link-arrow">→</span>
-        </a>
-      </li>
-    </ul>
-  </div>
+    <div class="header-spacer"></div>
+  </nav>
+  <main>
+    <section class="mos-intro">
+      <div class="mos-body">
+        <p>I built this as a holding space for the visual architects who taught me how to see. Not a history lesson. A resource. A place where craft is visible, where every frame is deliberate, and where the distinction between art and craft stops mattering.</p>
+        <p>It's growing. Photographers, cinematographers, directors, designers, game makers, and illustrators. From Roger Deakins to Hayao Miyazaki, from Paul Rand to Jenny Holzer. The connective tissue isn't medium. It's intention.</p>
+        <p>This is what thinking visually looks like when you refuse to compromise.</p>
+      </div>
+    </section>
+
+    <section class="screenshot-wrapper">
+      <div class="screenshot-container">
+        <img
+          class="screenshot-image"
+          src="https://res.cloudinary.com/dx8kswwgb/image/upload/v1781313611/Screenshot_2026-06-12_at_21.19.17_vdddmz.png"
+          alt="Masters Of Sight archive"
+        >
+        <div class="screenshot-fade"></div>
+        <div class="cta-overlay">
+          <p class="cta-text">Explore the full archive. Learn from the best. Understand how they think.</p>
+          <a href="https://mastersofsight.com" target="_blank" rel="noopener" class="cta-button">
+            Visit Masters Of Sight
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p class="footer-copy">Masters Of Sight is a curated living archive. Built by Benny Jackson.</p>
+  </footer>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <p class="footer-copy">Benny Jackson · Creative Director</p>
-</footer>
+<!-- ============================================================
+     PERSONAL VIEW: PHOTOGRAPHY
+     ============================================================ -->
+<section class="view personal-view" id="view-photography">
+  <nav class="personal-nav">
+    <a class="personal-back" data-view="home">← Back</a>
+
+    <h1 class="header-title">
+      Photography
+    </h1>
+
+    <div class="header-spacer"></div>
+  </nav>
+
+  <main>
+
+    <section class="gallery">
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </section>
+  </main>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">✕</button>
+    <div class="lightbox-container">
+      <img class="lightbox-img" id="lightboxImg" src="" alt="">
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
+      <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+      <div class="lightbox-counter"><span id="currentIndex">1</span> / <span id="totalCount">1</span></div>
+    </div>
+  </div>
+
+  <footer>
+    <p class="footer-copy">Photography by Benny Jackson.</p>
+  </footer>
+</section>
+
+<!-- Case study views get generated and injected here -->
+<div id="dynamic-views"></div>
 
 <script>
-  // Dynamic greeting based on time of day
-  function getGreeting() {
-    const hour = new Date().getHours();
-    if (hour < 12) return 'Good Morning';
-    if (hour < 18) return 'Good Afternoon';
-    return 'Good Evening';
+/* ============================================================
+   1. CASE STUDY DATA
+   ------------------------------------------------------------
+   TO ADD a case study: copy one { } block, change the slug,
+   title, and the videos. It appears on the homepage and gets
+   its own page automatically. Order here = order on homepage.
+
+   TO REMOVE a case study: delete its { } block. Done.
+
+   slug = the internal name (lowercase, no spaces, use dashes)
+   ============================================================ */
+const advertising = [
+  {
+    slug: 'apple',
+    title: 'Apple',
+    videos: [
+      { id: '785752002', title: 'Action Mode', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781287980/thumb_smhba6.jpg' },
+      { id: '785748985', title: 'Every Crime', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781289160/Every_Crime_sz5zl5.png' },
+      { id: '680291301', title: 'Severance: Severed Floor', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781289173/Severed_Floor_vrkmnn.png' },
+      { id: '699285899', title: 'Severance: Handbook', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781289172/Handbook_l9lgpj.png' },
+      { id: '699285598', title: 'Severance: MDR', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781289175/MDR_pefwwf.png' }
+    ]
+  },
+  {
+    slug: 'state-farm',
+    title: 'State Farm',
+    videos: [
+      { id: '12039085', title: 'Hot Tub', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309200/thumb-14_dlhkrh.jpg' },
+      { id: '12039018', title: 'Parking Lot', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309546/thumb-16_f06jbz.jpg' },
+      { id: '17315449', title: 'Anniversary', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309393/thumb-15_kj7nai.jpg' },
+      { id: '19128656', title: 'Buffalo', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309798/thumb-18_opzsjc.jpg' },
+      { id: '22484289', title: 'Bob Barker', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309946/thumb-19_gedhra.jpg' }
+    ]
+  },
+  {
+    slug: 'cup-noodles',
+    title: 'Cup Noodles',
+    videos: [
+      { id: '1128289030', title: 'All Too Much', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781310484/thumb-6_nosfic.jpg' },
+      { id: '1128289079', title: 'Packaging', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781310594/thumb-20_zfulsc.jpg' },
+      { id: '1162253648', title: 'Fuel For Whatever', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781310689/thumb-3_kisxjr.jpg' },
+      { id: '1162253617', title: 'Orcbot', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781310788/thumb-4_sajccu.jpg' },
+      { id: '1162253633', title: 'Keytar', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781310906/thumb-2_zhv3tr.jpg' }
+    ]
+  },
+  {
+    slug: 'carls-jr',
+    title: "Carl's Jr.",
+    videos: [
+      { id: '256425904', title: 'Open Sesame', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311282/thumb-21_o8xzux.jpg' },
+      { id: '268587582', title: 'Pretty Penny', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311402/thumb-22_ytdtyp.jpg' },
+      { id: '256425383', title: 'Whoa Nelly', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311497/thumb-23_agbg8y.jpg' },
+      { id: '274776586', title: 'Pure Temptation', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311594/thumb-24_mexkil.jpg' },
+      { id: '274776502', title: 'Devils Trance', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311690/thumb-25_tr95hi.jpg' }
+    ]
+  },
+  {
+    slug: 'dish',
+    title: 'DISH',
+    videos: [
+      { id: '103848801', title: 'Tater Skins', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311938/thumb-26_uitmkr.jpg' },
+      { id: '102552328', title: 'Glory Days', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781312024/thumb-27_se3hrr.jpg' },
+      { id: '89403130', title: 'Mobile Basketball', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781312115/thumb-28_coq0mi.jpg' },
+      { id: '95514300', title: 'Road Trip', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781312251/thumb-29_na44lt.jpg' },
+      { id: '101420666', title: 'Moms Fault', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781312367/thumb-30_uxdtw1.jpg' }
+    ]
   }
+];
 
-  document.getElementById('greeting').textContent = getGreeting();
+/* ============================================================
+   2. PHOTOGRAPHY IMAGES
+   ------------------------------------------------------------
+   TO ADD/REMOVE a photo: add or delete a URL in this list.
+   ============================================================ */
+const photos = [
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314456/SA3.jpg_gscspn.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314645/DSC07983_2.jpg_ffrosu.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314639/DSC00833-2.jpg_ocnpbc.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314633/DSC02284.jpg_qkfhqr.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314627/SA7.jpg_xi8taa.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314621/DSC09811.jpg_k6biww.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314615/SA8.jpg_mdu6tv.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314608/DSC02417.jpg_wxjm1b.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314602/SA6.jpg_ueisiv.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314596/DSC00930.jpg_tabjxt.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314590/DSC06926.jpg_xjsm3n.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314584/bennyjackson-9.jpg_cjr7p7.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314578/SA4.jpg_ha1fdt.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314572/27079955821_36eaedd92c_o.jpg_wuawvu.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314566/DSC00401.jpg_hma1c3.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314560/SA9.jpg_n1rnsi.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314554/DSC09900.jpg_jvcxjp.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314541/SA-2.jpg_aq0wsm.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314535/DSC00683.jpg_sqbzij.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314547/DSC05542.jpg_uidsck.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314529/SA2.jpg_ntmfac.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314523/DSC05895.jpg_jvx9be.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314516/26797665630_491b2ab841_o.jpg_quuydy.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314510/DSC02103.jpg_veqg0m.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314504/van.jpg_ys4y05.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314498/26056636730_56e420af10_o.jpg_pm2j9c.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314492/27665382042_fdb63e70b7_o.jpg_rsjbak.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314486/26571755661_e81d62b57d_o.jpg_li2fz1.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314480/26544234543_c027ab2b75_o.jpg_lyvsjh.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314474/27363042500_9cf2a3d649_o.jpg_phjdom.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314468/DSC00639.jpg_hxe6er.webp',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314461/DSC02301.jpg_rvel3b.webp'
+];
 
-  // Unmute button handler with mute/unmute toggle
+/* ============================================================
+   3. BUILD CASE STUDIES (nav links + views) FROM DATA
+   ============================================================ */
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function buildCaseStudies() {
+  const navList = document.getElementById('advertising-list');
+  const container = document.getElementById('dynamic-views');
+
+  advertising.forEach(cs => {
+    // Homepage nav link
+    const li = document.createElement('li');
+    li.className = 'nav-item';
+    li.innerHTML =
+      '<a class="nav-link" data-view="' + cs.slug + '">' +
+        '<span>' + escapeHtml(cs.title) + '</span>' +
+        '<span class="nav-link-arrow">&rarr;</span>' +
+      '</a>';
+    navList.appendChild(li);
+
+    // The case study view
+    const section = document.createElement('section');
+    section.className = 'view case-study-view';
+    section.id = 'view-' + cs.slug;
+    section.innerHTML =
+      '<header class="header">' +
+        '<a class="header-back" data-back="' + cs.slug + '">&larr; Back</a>' +
+        '<h1 class="header-title">' + escapeHtml(cs.title) + '</h1>' +
+        '<div class="header-spacer"></div>' +
+      '</header>' +
+      '<main>' +
+        '<div class="grid-view" id="grid-' + cs.slug + '"></div>' +
+        '<div class="player-view" id="player-' + cs.slug + '">' +
+          '<div class="video-player-container">' +
+            '<iframe id="iframe-' + cs.slug + '" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" frameborder="0"></iframe>' +
+          '</div>' +
+          '<div class="filmstrip-container">' +
+            '<div class="filmstrip" id="filmstrip-' + cs.slug + '"></div>' +
+          '</div>' +
+        '</div>' +
+      '</main>';
+    container.appendChild(section);
+
+    // Grid thumbnails
+    document.getElementById('grid-' + cs.slug).innerHTML = cs.videos.map((v, i) =>
+      '<div class="video-card" data-cs="' + cs.slug + '" data-index="' + i + '">' +
+        '<img src="' + v.thumbnail + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
+        '<div class="play-icon">&#9654;</div>' +
+        '<div class="video-card-label">' + escapeHtml(v.title) + '</div>' +
+      '</div>'
+    ).join('');
+
+    // Filmstrip
+    document.getElementById('filmstrip-' + cs.slug).innerHTML = cs.videos.map((v, i) =>
+      '<div class="filmstrip-item' + (i === 0 ? ' is-active' : '') + '" data-cs="' + cs.slug + '" data-index="' + i + '">' +
+        '<img src="' + v.thumbnail + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
+        '<div class="filmstrip-item-label">' + escapeHtml(v.title) + '</div>' +
+      '</div>'
+    ).join('');
+  });
+}
+
+/* ============================================================
+   4. VIEW SWITCHING — the heart of the single-page behavior
+   ============================================================ */
+let heroPlayer = null;
+
+function resetAllPlayers() {
+  advertising.forEach(cs => {
+    const player = document.getElementById('player-' + cs.slug);
+    const grid = document.getElementById('grid-' + cs.slug);
+    const frame = document.getElementById('iframe-' + cs.slug);
+    if (player && player.classList.contains('is-active')) {
+      player.classList.remove('is-active');
+      if (grid) grid.style.display = 'grid';
+      if (frame) frame.src = '';
+    }
+  });
+}
+
+function showView(name) {
+  resetAllPlayers();
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('is-active'));
+  const view = document.getElementById('view-' + name);
+  if (view) view.classList.add('is-active');
+  window.scrollTo(0, 0);
+
+  // Pause the hero reel when away from home, resume on return
+  if (heroPlayer) {
+    if (name === 'home') { heroPlayer.play().catch(() => {}); }
+    else { heroPlayer.pause().catch(() => {}); }
+  }
+}
+
+/* Case study video playback */
+function getCS(slug) { return advertising.find(c => c.slug === slug); }
+
+function setVideo(slug, index) {
+  const cs = getCS(slug);
+  if (!cs) return;
+  const frame = document.getElementById('iframe-' + slug);
+  frame.src = 'https://player.vimeo.com/video/' + cs.videos[index].id + '?badge=0&autopause=0&player_id=0&app_id=58479';
+
+  const items = document.querySelectorAll('#filmstrip-' + slug + ' .filmstrip-item');
+  items.forEach((it, i) => it.classList.toggle('is-active', i === index));
+  if (items[index]) items[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function playVideo(slug, index) {
+  document.getElementById('grid-' + slug).style.display = 'none';
+  document.getElementById('player-' + slug).classList.add('is-active');
+  setVideo(slug, index);
+}
+
+function caseStudyBack(slug) {
+  const player = document.getElementById('player-' + slug);
+  if (player.classList.contains('is-active')) {
+    // First back press: leave the player, return to this brand's grid
+    player.classList.remove('is-active');
+    document.getElementById('iframe-' + slug).src = '';
+    document.getElementById('grid-' + slug).style.display = 'grid';
+  } else {
+    // Second back press: home
+    showView('home');
+  }
+}
+
+/* ============================================================
+   5. PHOTOGRAPHY GALLERY + LIGHTBOX
+   ============================================================ */
+let currentImageIndex = 0;
+
+function buildGallery() {
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = photos.map((src, i) =>
+    '<div class="gallery-item" data-photo="' + i + '">' +
+      '<img src="' + src + '" alt="Photo ' + (i + 1) + '" loading="lazy">' +
+    '</div>'
+  ).join('');
+  document.getElementById('totalCount').textContent = photos.length;
+}
+
+function openLightbox(index) {
+  currentImageIndex = index;
+  document.getElementById('lightboxImg').src = photos[index];
+  document.getElementById('currentIndex').textContent = index + 1;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function nextImage() {
+  currentImageIndex = (currentImageIndex + 1) % photos.length;
+  document.getElementById('lightboxImg').src = photos[currentImageIndex];
+  document.getElementById('currentIndex').textContent = currentImageIndex + 1;
+}
+
+function prevImage() {
+  currentImageIndex = (currentImageIndex - 1 + photos.length) % photos.length;
+  document.getElementById('lightboxImg').src = photos[currentImageIndex];
+  document.getElementById('currentIndex').textContent = currentImageIndex + 1;
+}
+
+/* ============================================================
+   6. WIRE EVERYTHING UP
+   ============================================================ */
+document.addEventListener('click', (e) => {
+  // Case study two-level back (must run before generic data-view)
+  const back = e.target.closest('.header-back[data-back]');
+  if (back) { caseStudyBack(back.dataset.back); return; }
+
+  // Any element that navigates to a view (nav links, logo, personal back)
+  const trigger = e.target.closest('[data-view]');
+  if (trigger) { e.preventDefault(); showView(trigger.dataset.view); return; }
+
+  // Case study thumbnail
+  const card = e.target.closest('.video-card');
+  if (card) { playVideo(card.dataset.cs, parseInt(card.dataset.index, 10)); return; }
+
+  // Filmstrip thumbnail
+  const strip = e.target.closest('.filmstrip-item');
+  if (strip) { setVideo(strip.dataset.cs, parseInt(strip.dataset.index, 10)); return; }
+
+  // Photography gallery item
+  const photo = e.target.closest('.gallery-item');
+  if (photo) { openLightbox(parseInt(photo.dataset.photo, 10)); return; }
+});
+
+document.addEventListener('keydown', (e) => {
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox && lightbox.classList.contains('active')) {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft') prevImage();
+    return;
+  }
+  if (e.key === 'Escape' && menuIsOpen) closeMenu();
+});
+
+/* Lightbox controls */
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+document.getElementById('lightboxPrev').addEventListener('click', prevImage);
+document.getElementById('lightboxNext').addEventListener('click', nextImage);
+
+/* ============================================================
+   7. HERO REEL — greeting, unmute, player handle
+   ============================================================ */
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good Morning';
+  if (hour < 18) return 'Good Afternoon';
+  return 'Good Evening';
+}
+document.getElementById('greeting').textContent = getGreeting();
+
+(function setupHero() {
+  const heroIframe = document.getElementById('heroIframe');
   const unmuteButton = document.getElementById('unmuteButton');
   const volumeIcon = document.getElementById('volumeIcon');
-  const heroSection = document.getElementById('heroSection');
-  const iframe = heroSection.querySelector('iframe');
-  let isMuted = true;
-  
   const offIcon = 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781298456/off_azlk8m.png';
   const onIcon = 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781298458/on_uxu72e.png';
-  
-  if (iframe && window.Vimeo) {
-    const player = new Vimeo.Player(iframe);
-    
+  let isMuted = true;
+
+  if (heroIframe && window.Vimeo) {
+    heroPlayer = new Vimeo.Player(heroIframe);
     unmuteButton.addEventListener('click', (e) => {
       e.preventDefault();
       if (isMuted) {
-        player.setVolume(1).then(() => {
+        heroPlayer.setVolume(1).then(() => {
           isMuted = false;
           volumeIcon.src = onIcon;
           unmuteButton.classList.add('is-unmuted');
         }).catch(err => console.error('Unmute failed:', err));
       } else {
-        player.setVolume(0).then(() => {
+        heroPlayer.setVolume(0).then(() => {
           isMuted = true;
           volumeIcon.src = offIcon;
           unmuteButton.classList.remove('is-unmuted');
@@ -783,87 +1686,74 @@
       }
     });
   }
+})();
 
-  // Fade out scroll hint on scroll
-  window.addEventListener('scroll', () => {
-    const hint = document.querySelector('.scroll-hint');
-    const scrollPercent = window.scrollY / window.innerHeight;
-    hint.style.opacity = Math.max(0, 1 - scrollPercent * 3);
+/* Fade out scroll hint on scroll */
+window.addEventListener('scroll', () => {
+  const hint = document.querySelector('.scroll-hint');
+  if (!hint) return;
+  const scrollPercent = window.scrollY / window.innerHeight;
+  hint.style.opacity = Math.max(0, 1 - scrollPercent * 3);
+});
+
+/* ============================================================
+   8. HOME MENU (About / Contact overlay)
+   ============================================================ */
+const hamburger = document.getElementById('hamburger');
+const menuOverlay = document.getElementById('menuOverlay');
+const menuClose = document.getElementById('menuClose');
+const menuButtons = document.querySelectorAll('[data-section]');
+let menuIsOpen = false;
+let activeSection = null;
+
+function openMenu() {
+  menuIsOpen = true;
+  hamburger.classList.add('is-open');
+  hamburger.setAttribute('aria-expanded', 'true');
+  menuOverlay.classList.add('is-visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+  menuIsOpen = false;
+  hamburger.classList.remove('is-open');
+  hamburger.setAttribute('aria-expanded', 'false');
+  menuOverlay.classList.remove('is-visible');
+  document.body.style.overflow = '';
+  clearActiveSection();
+}
+
+function clearActiveSection() {
+  document.querySelectorAll('.menu-content').forEach(c => c.classList.remove('is-visible'));
+  document.getElementById('menuItems').style.display = 'flex';
+  activeSection = null;
+}
+
+function showSection(sectionId) {
+  if (activeSection === sectionId) { clearActiveSection(); return; }
+  document.getElementById('menuItems').style.display = 'none';
+  document.querySelectorAll('.menu-content').forEach(c => c.classList.remove('is-visible'));
+  setTimeout(() => {
+    document.getElementById(sectionId + '-content').classList.add('is-visible');
+  }, 200);
+  activeSection = sectionId;
+}
+
+hamburger.addEventListener('click', () => { menuIsOpen ? closeMenu() : openMenu(); });
+menuClose.addEventListener('click', closeMenu);
+menuOverlay.addEventListener('click', (e) => { if (e.target === menuOverlay) closeMenu(); });
+menuButtons.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showSection(btn.dataset.section);
   });
+});
 
-  // Menu functionality
-  const hamburger = document.getElementById('hamburger');
-  const menuOverlay = document.getElementById('menuOverlay');
-  const menuClose = document.getElementById('menuClose');
-  const menuButtons = document.querySelectorAll('[data-section]');
-  
-  let isOpen = false;
-  let activeSection = null;
-
-  function openMenu() {
-    isOpen = true;
-    hamburger.classList.add('is-open');
-    hamburger.setAttribute('aria-expanded', 'true');
-    menuOverlay.classList.add('is-visible');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeMenu() {
-    isOpen = false;
-    hamburger.classList.remove('is-open');
-    hamburger.setAttribute('aria-expanded', 'false');
-    menuOverlay.classList.remove('is-visible');
-    document.body.style.overflow = '';
-    clearActiveSection();
-  }
-
-  function clearActiveSection() {
-    document.querySelectorAll('.menu-content').forEach(c => c.classList.remove('is-visible'));
-    document.getElementById('menuItems').style.display = 'flex';
-    document.getElementById('menuItems').style.opacity = '1';
-    activeSection = null;
-  }
-
-  function showSection(sectionId) {
-    const content = document.getElementById(sectionId + '-content');
-    const button = document.querySelector(`[data-section="${sectionId}"]`);
-    
-    if (activeSection === sectionId) {
-      clearActiveSection();
-      return;
-    }
-
-    document.getElementById('menuItems').style.display = 'none';
-    document.querySelectorAll('.menu-content').forEach(c => c.classList.remove('is-visible'));
-    
-    setTimeout(() => {
-      content.classList.add('is-visible');
-    }, 200);
-    
-    activeSection = sectionId;
-  }
-
-  hamburger.addEventListener('click', () => {
-    if (isOpen) closeMenu();
-    else openMenu();
-  });
-
-  menuClose.addEventListener('click', closeMenu);
-
-  menuOverlay.addEventListener('click', (e) => {
-    if (e.target === menuOverlay) closeMenu();
-  });
-
-  menuButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      showSection(btn.dataset.section);
-    });
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && isOpen) closeMenu();
-  });
+/* ============================================================
+   9. GO
+   ============================================================ */
+buildCaseStudies();
+buildGallery();
 </script>
 
 </body>
