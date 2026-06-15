@@ -111,6 +111,10 @@
       flex-direction: column;
       gap: 5px;
       align-items: flex-end;
+      position: fixed;
+      top: 12px;
+      right: 32px;
+      z-index: 600;
     }
 
     .hamburger-line {
@@ -151,7 +155,7 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.99);
       backdrop-filter: blur(8px);
-      z-index: 400;
+      z-index: 590;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.6s cubic-bezier(0.76, 0, 0.24, 1);
@@ -1130,6 +1134,34 @@
 </head>
 <body>
 
+<!-- GLOBAL: hamburger + menu overlay (persist across all views) -->
+<button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+  <span class="hamburger-line"></span>
+  <span class="hamburger-line"></span>
+  <span class="hamburger-line"></span>
+</button>
+
+<div class="menu-overlay" id="menuOverlay">
+  <button class="menu-close" id="menuClose">✕</button>
+
+  <div class="menu-content" id="menu-content-main">
+    <div class="menu-content-text" style="text-align: left; max-width: 600px; margin: 0 auto;">
+      <p style="margin-bottom: 16px;">I'm a Creative Director. Spent 20+ years at agencies that actually pushed (TBWA\Media Arts Lab, and others), working on brands that refused to settle. Apple, State Farm, Cup Noodles, Carl's Jr., DISH. The thread through everything: ideas that feel discovered, not manufactured.</p>
+      <p style="margin-bottom: 16px;">For the past year I've been building something called Masters Of Sight. It started as this nagging feeling that there weren't enough spaces celebrating the people who genuinely move the needle in visual culture. So I started cataloging photographers, cinematographers, directors, designers, game developers whose work made me stop and think differently. It's grown into a curated archive of the visual architects I genuinely believe in. Not exhaustive. Just ruthlessly intentional. If you care about craft, it's worth spending time there.</p>
+      <p style="margin-bottom: 16px;">I shoot photography as a way to stay present. Forces you to actually see light and moment instead of just moving through the world.</p>
+      <p style="margin-bottom: 16px;">Woodworking is my other creative language. Tables, bowls, benches, cups, shelves, anything I can dream up really. It's a completely different kind of problem-solving than advertising or writing, which is exactly why I do it. Different form, same creative hunger. Keeps you humble. You can't bullshit wood.</p>
+      <p style="margin-bottom: 16px;">I'm also deep in developing an original television series. Big world. Ambitious ideas. The kind of thing you think about at 3am and can't stop.</p>
+      <p>Everything creative I do comes down to the same principle: vision, systems thinking, intentional tool use. The medium changes. The rigor doesn't.</p>
+    </div>
+    <hr style="border: none; border-top: 0.5px solid rgba(255,255,255,0.1); margin: 32px 0;">
+    <p class="menu-content-text">If you've got something worth making, let's talk.</p>
+    <a href="mailto:bennyjackson@me.com" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">bennyjackson@me.com</a>
+    <p style="margin-top: 32px; margin-bottom: 12px;">
+      <a href="resume.pdf" download="Benny Jackson Resume.pdf" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">↓ Download Resume</a>
+    </p>
+  </div>
+</div>
+
 <!-- ============================================================
      HOME VIEW
      ============================================================ -->
@@ -1142,34 +1174,8 @@
     Benny Jackson
   </div>
 
-  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-    <span class="hamburger-line"></span>
-    <span class="hamburger-line"></span>
-    <span class="hamburger-line"></span>
-  </button>
+  <div style="width: 44px;"></div>
 </nav>
-
-  <!-- MENU OVERLAY -->
-  <div class="menu-overlay" id="menuOverlay">
-    <button class="menu-close" id="menuClose">✕</button>
-
-    <div class="menu-content" id="menu-content-main">
-      <div class="menu-content-text" style="text-align: left; max-width: 600px; margin: 0 auto;">
-        <p style="margin-bottom: 16px;">I'm a Creative Director. Spent 20+ years at agencies that actually pushed (TBWA\Media Arts Lab, and others), working on brands that refused to settle. Apple, State Farm, Cup Noodles, Carl's Jr., DISH. The thread through everything: ideas that feel discovered, not manufactured.</p>
-        <p style="margin-bottom: 16px;">For the past year I've been building something called Masters Of Sight. It started as this nagging feeling that there weren't enough spaces celebrating the people who genuinely move the needle in visual culture. So I started cataloging photographers, cinematographers, directors, designers, game developers whose work made me stop and think differently. It's grown into a curated archive of the visual architects I genuinely believe in. Not exhaustive. Just ruthlessly intentional. If you care about craft, it's worth spending time there.</p>
-        <p style="margin-bottom: 16px;">I shoot photography as a way to stay present. Forces you to actually see light and moment instead of just moving through the world.</p>
-        <p style="margin-bottom: 16px;">Woodworking is my other creative language. Tables, bowls, benches, cups, shelves, anything I can dream up really. It's a completely different kind of problem-solving than advertising or writing, which is exactly why I do it. Different form, same creative hunger. Keeps you humble. You can't bullshit wood.</p>
-        <p style="margin-bottom: 16px;">I'm also deep in developing an original television series. Big world. Ambitious ideas. The kind of thing you think about at 3am and can't stop.</p>
-        <p>Everything creative I do comes down to the same principle: vision, systems thinking, intentional tool use. The medium changes. The rigor doesn't.</p>
-      </div>
-      <hr style="border: none; border-top: 0.5px solid rgba(255,255,255,0.1); margin: 32px 0;">
-      <p class="menu-content-text">If you've got something worth making, let's talk.</p>
-      <a href="mailto:bennyjackson@me.com" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">bennyjackson@me.com</a>
-      <p style="margin-top: 32px; margin-bottom: 12px;">
-        <a href="resume.pdf" download="Benny Jackson Resume.pdf" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">↓ Download Resume</a>
-      </p>
-    </div>
-  </div>
 
   <!-- HERO -->
   <section class="hero-section" id="heroSection">
