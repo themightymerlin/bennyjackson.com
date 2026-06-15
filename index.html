@@ -1518,12 +1518,14 @@ function resetAllPlayers() {
   });
 }
 
-function showView(name) {
+function showView(name, pushHistory = true) {
   resetAllPlayers();
   document.querySelectorAll('.view').forEach(v => v.classList.remove('is-active'));
   const view = document.getElementById('view-' + name);
   if (view) view.classList.add('is-active');
   window.scrollTo(0, 0);
+
+  if (pushHistory) history.pushState({ view: name }, '', '');
 
   // Pause the hero reel when away from home, resume on return
   if (heroPlayer) {
@@ -1720,9 +1722,15 @@ function closeMenu() {
 hamburger.addEventListener('click', () => { menuIsOpen ? closeMenu() : openMenu(); });
 menuOverlay.addEventListener('click', (e) => { if (e.target === menuOverlay) closeMenu(); });
 
+window.addEventListener('popstate', (e) => {
+  const name = e.state?.view ?? 'home';
+  showView(name, false);
+});
+
 /* ============================================================
    9. GO
    ============================================================ */
+history.replaceState({ view: 'home' }, '', '');
 buildCaseStudies();
 buildGallery();
 </script>
