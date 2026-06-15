@@ -1142,26 +1142,26 @@
 </button>
 
 <div class="menu-overlay" id="menuOverlay">
-  <button class="menu-close" id="menuClose">✕</button>
-
   <div class="menu-content" id="menu-content-main">
     <div class="menu-content-text" style="text-align: left; max-width: 600px; margin: 0 auto;">
       <p style="margin-bottom: 16px;">I'm a Creative Director with 20+ years of experience. Apple, Heineken, Lincoln, Samsung, GE, Vitamin Water, State Farm, and a few dozen others you'd recognize. The thread through all of it: ideas that feel discovered, not manufactured.</p>
       <p style="margin-bottom: 16px;">I founded Masters Of Sight, a curated archive of the photographers, filmmakers, designers, and creators who inspire me. When I'm not building brands, I'm usually behind a camera, in the woodshop, or developing original story worlds.</p>
       <p style="margin-bottom: 16px;">Different mediums. Same pursuit: meaningful ideas, thoughtful craft, and work that leaves a mark.</p>
     </div>
-    <hr style="border: none; border-top: 0.5px solid rgba(255,255,255,0.1); margin: 32px 0;">
-    <p class="menu-content-text">If you've got something worth making, let's talk.</p>
-    <a href="mailto:bennyjackson@me.com" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">bennyjackson@me.com</a>
-    <p style="margin-top: 32px; margin-bottom: 12px;">
-      <a href="resume.pdf" download="Benny Jackson Resume.pdf" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">↓ Download Resume</a>
-    </p>
-    <p style="margin-top: 12px;">
-      <a href="https://vimeo.com/bennyjackson" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">Vimeo →</a>
-    </p>
-    <p style="margin-top: 12px;">
-      <a href="https://www.linkedin.com/in/bennyjackson" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">LinkedIn →</a>
-    </p>
+    <div style="max-width: 600px; margin: 0 auto; text-align: left;">
+      <hr style="border: none; border-top: 0.5px solid rgba(255,255,255,0.1); margin: 32px 0;">
+      <p class="menu-content-text">If you've got something worth making, let's talk.</p>
+      <a href="mailto:bennyjackson@me.com" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">bennyjackson@me.com</a>
+      <p style="margin-top: 32px; margin-bottom: 12px;">
+        <a href="resume.pdf" download="Benny Jackson Resume.pdf" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">↓ Download Resume</a>
+      </p>
+      <p style="margin-top: 12px;">
+        <a href="https://vimeo.com/bennyjackson" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">Vimeo →</a>
+      </p>
+      <p style="margin-top: 12px;">
+        <a href="https://www.linkedin.com/in/bennyjackson" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none; font-size: 14px; letter-spacing: 0.05em;">LinkedIn →</a>
+      </p>
+    </div>
   </div>
 </div>
 
@@ -1699,7 +1699,6 @@ window.addEventListener('scroll', () => {
    ============================================================ */
 const hamburger = document.getElementById('hamburger');
 const menuOverlay = document.getElementById('menuOverlay');
-const menuClose = document.getElementById('menuClose');
 let menuIsOpen = false;
 
 function openMenu() {
@@ -1719,7 +1718,6 @@ function closeMenu() {
 }
 
 hamburger.addEventListener('click', () => { menuIsOpen ? closeMenu() : openMenu(); });
-menuClose.addEventListener('click', closeMenu);
 menuOverlay.addEventListener('click', (e) => { if (e.target === menuOverlay) closeMenu(); });
 
 /* ============================================================
