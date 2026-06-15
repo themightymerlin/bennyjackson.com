@@ -861,10 +861,12 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 65%;
-      background: linear-gradient(to bottom, rgba(10, 10, 10, 0), rgba(10, 10, 10, 0.98));
+      height: 80%;
+      background: linear-gradient(to bottom, rgba(10, 10, 10, 0) 20%, rgba(10, 10, 10, 0.99) 70%);
       pointer-events: none;
     }
+
+    .mobile-break { display: none; }
 
     .cta-overlay {
       position: absolute;
@@ -1116,6 +1118,7 @@
       .mos-body { font-size: 14px; }
       .cta-overlay { padding: 40px 20px 32px; min-height: 280px; }
       .cta-text { font-size: 14px; margin-bottom: 24px; }
+      .mobile-break { display: inline; }
       .cta-button { font-size: 10px; padding: 12px 32px; }
       .personal-nav { padding: 0 20px; }
 
@@ -1272,7 +1275,7 @@
         >
         <div class="screenshot-fade"></div>
         <div class="cta-overlay">
-          <p class="cta-text">Explore the full archive. Learn from the best. Understand how they think.</p>
+          <p class="cta-text">Explore the full archive. Learn from the best.<br class="mobile-break"> Understand how they think.</p>
           <a href="https://mastersofsight.com" target="_blank" rel="noopener" class="cta-button">
             Visit Masters Of Sight
             <span>→</span>
