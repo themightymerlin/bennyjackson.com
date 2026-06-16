@@ -1133,6 +1133,58 @@
       .lightbox-prev { left: 12px; }
       .lightbox-next { right: 12px; }
     }
+
+    /* ── MORE WORK ── */
+    .more-work-link {
+      opacity: 0.55;
+      margin-top: 16px;
+      border-top: 0.5px solid var(--border);
+      padding-top: 24px !important;
+      font-style: italic;
+    }
+    .more-work-link:hover { opacity: 1; }
+
+    .more-work-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-variant: small-caps;
+      color: var(--accent);
+      padding: 120px 48px 0;
+      max-width: 1600px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    #grid-more-work {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      padding: 24px 48px 80px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    #grid-more-work .video-card:nth-child(1),
+    #grid-more-work .video-card:nth-child(2) { grid-column: span 3; }
+
+    #grid-more-work .video-card:nth-child(3),
+    #grid-more-work .video-card:nth-child(4),
+    #grid-more-work .video-card:nth-child(5) { grid-column: span 2; }
+
+    #grid-more-work .video-card:nth-child(6),
+    #grid-more-work .video-card:nth-child(7) { grid-column: span 3; }
+
+    @media (max-width: 900px) {
+      #grid-more-work { grid-template-columns: repeat(2, 1fr); }
+      #grid-more-work .video-card { grid-column: span 1 !important; }
+    }
+
+    @media (max-width: 600px) {
+      #grid-more-work { grid-template-columns: 1fr; padding: 24px 20px 60px; }
+      .more-work-eyebrow { padding: 80px 20px 0; }
+    }
+
   </style>
 </head>
 <body>
@@ -1329,6 +1381,7 @@
 <!-- Case study views get generated and injected here -->
 <div id="dynamic-views"></div>
 
+
 <script>
 /* ============================================================
    1. CASE STUDY DATA
@@ -1396,7 +1449,39 @@ const advertising = [
       { id: '95514300', title: 'Road Trip', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781312251/thumb-29_na44lt.jpg' },
       { id: '101420666', title: 'Moms Fault', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781312367/thumb-30_uxdtw1.jpg' }
     ]
+  },
+  {
+    slug: 'craftsman',
+    title: 'Craftsman',
+    videos: [
+      { id: '115808445', title: 'Love. Making. Mini Documentary', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781614916/thumb-3_caq6e2.jpg' },
+      { id: '115810331', title: 'Love. Making.', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615076/thumb-4_c0rhy2.jpg' },
+      { id: '123496225', title: 'Pro Series', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781614790/thumb-2_cgggjn.jpg' },
+      { id: '123344465', title: 'Factory', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615360/thumb-6_fncqyp.jpg' },
+      { id: '122664405', title: 'Keep It In The Family', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615560/thumb-13_wxjpbn.jpg' }
+    ]
+  },
+  {
+    slug: 'mikes-hard',
+    title: "Mike's Hard Lemonade",
+    videos: [
+      { id: '268587544', title: 'Bird Party', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615683/thumb-14_wwecte.jpg' },
+      { id: '268587491', title: 'Top 40', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615821/thumb-15_nptmgw.jpg' },
+      { id: '268587448', title: 'Happy Hour', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615908/thumb-16_lb8gun.jpg' },
+      { id: '268587626', title: 'Sandbox', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781616185/thumb-17_t0kmgj.jpg' },
+      { id: '268587631', title: 'Bouncy Bouncy', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781616302/thumb-18_dpnkq5.jpg' }
+    ]
   }
+];
+
+const moreWork = [
+  { id: '65326587',   title: 'Dos Equis — Yellow',             thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781616741/thumb-20_lze4r5.jpg' },
+  { id: '1128288886', title: 'UKHC — I Shouldn\'t Be Here',    thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781616904/thumb-21_zuo6mi.jpg' },
+  { id: '103848071',  title: 'Terminix — Death To Mosquitoes', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781617315/thumb-24_lziucf.jpg' },
+  { id: '61559728',   title: 'Pucker Vodka — Tonight',         thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781617471/thumb-25_pzz4ck.jpg' },
+  { id: '84051415',   title: 'Wingstop — Sneak Out',           thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781616569/thumb-19_uh4ltx.jpg' },
+  { id: '39639100',   title: 'Vitaminwater — Jockey',          thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781617691/thumb-26_rubirj.jpg' },
+  { id: '39672833',   title: 'Lincoln — Effects',              thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781617894/thumb-27_jwjlvv.jpg' }
 ];
 
 /* ============================================================
@@ -1501,6 +1586,55 @@ function buildCaseStudies() {
       '</div>'
     ).join('');
   });
+
+  // "More work" trigger link
+  const moreLink = document.createElement('a');
+  moreLink.className = 'nav-link more-work-link';
+  moreLink.dataset.view = 'more-work';
+  moreLink.innerHTML = '<em>More work</em><span class="nav-link-arrow">&rarr;</span>';
+  navList.parentElement.appendChild(moreLink);
+}
+
+function buildMoreWork() {
+  const container = document.getElementById('dynamic-views');
+
+  const section = document.createElement('section');
+  section.className = 'view case-study-view';
+  section.id = 'view-more-work';
+  section.innerHTML =
+    '<header class="header">' +
+      '<a class="header-back" data-back="more-work">&larr; Back</a>' +
+      '<h1 class="header-title">More Work</h1>' +
+      '<div class="header-spacer"></div>' +
+    '</header>' +
+    '<main>' +
+      '<p class="more-work-eyebrow">A few more clients worth mentioning.</p>' +
+      '<div id="grid-more-work"></div>' +
+      '<div class="player-view" id="player-more-work">' +
+        '<div class="video-player-container">' +
+          '<iframe id="iframe-more-work" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" frameborder="0"></iframe>' +
+        '</div>' +
+        '<div class="filmstrip-container">' +
+          '<div class="filmstrip" id="filmstrip-more-work"></div>' +
+        '</div>' +
+      '</div>' +
+    '</main>';
+  container.appendChild(section);
+
+  document.getElementById('grid-more-work').innerHTML = moreWork.map((v, i) =>
+    '<div class="video-card" data-mw-index="' + i + '">' +
+      '<img src="' + v.thumbnail + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
+      '<div class="play-icon">&#9654;</div>' +
+      '<div class="video-card-label">' + escapeHtml(v.title) + '</div>' +
+    '</div>'
+  ).join('');
+
+  document.getElementById('filmstrip-more-work').innerHTML = moreWork.map((v, i) =>
+    '<div class="filmstrip-item' + (i === 0 ? ' is-active' : '') + '" data-mw-index="' + i + '">' +
+      '<img src="' + v.thumbnail + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
+      '<div class="filmstrip-item-label">' + escapeHtml(v.title) + '</div>' +
+    '</div>'
+  ).join('');
 }
 
 /* ============================================================
@@ -1519,6 +1653,14 @@ function resetAllPlayers() {
       if (frame) frame.src = '';
     }
   });
+  const mwPlayer = document.getElementById('player-more-work');
+  const mwGrid = document.getElementById('grid-more-work');
+  const mwFrame = document.getElementById('iframe-more-work');
+  if (mwPlayer && mwPlayer.classList.contains('is-active')) {
+    mwPlayer.classList.remove('is-active');
+    if (mwGrid) mwGrid.style.display = 'grid';
+    if (mwFrame) mwFrame.src = '';
+  }
 }
 
 function showView(name, pushHistory = true) {
@@ -1557,15 +1699,29 @@ function playVideo(slug, index) {
   setVideo(slug, index);
 }
 
+function setMoreWork(index) {
+  const v = moreWork[index];
+  if (!v) return;
+  document.getElementById('iframe-more-work').src =
+    'https://player.vimeo.com/video/' + v.id + '?badge=0&autopause=0&player_id=0&app_id=58479';
+  const items = document.querySelectorAll('#filmstrip-more-work .filmstrip-item');
+  items.forEach((it, i) => it.classList.toggle('is-active', i === index));
+  if (items[index]) items[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function playMoreWork(index) {
+  document.getElementById('grid-more-work').style.display = 'none';
+  document.getElementById('player-more-work').classList.add('is-active');
+  setMoreWork(index);
+}
+
 function caseStudyBack(slug) {
   const player = document.getElementById('player-' + slug);
   if (player.classList.contains('is-active')) {
-    // First back press: leave the player, return to this brand's grid
     player.classList.remove('is-active');
     document.getElementById('iframe-' + slug).src = '';
     document.getElementById('grid-' + slug).style.display = 'grid';
   } else {
-    // Second back press: home
     showView('home');
   }
 }
@@ -1624,15 +1780,30 @@ document.addEventListener('click', (e) => {
 
   // Case study thumbnail
   const card = e.target.closest('.video-card');
-  if (card) { playVideo(card.dataset.cs, parseInt(card.dataset.index, 10)); return; }
+  if (card) {
+    if (card.dataset.mwIndex !== undefined) {
+      playMoreWork(parseInt(card.dataset.mwIndex, 10));
+    } else {
+      playVideo(card.dataset.cs, parseInt(card.dataset.index, 10));
+    }
+    return;
+  }
 
   // Filmstrip thumbnail
   const strip = e.target.closest('.filmstrip-item');
-  if (strip) { setVideo(strip.dataset.cs, parseInt(strip.dataset.index, 10)); return; }
+  if (strip) {
+    if (strip.dataset.mwIndex !== undefined) {
+      setMoreWork(parseInt(strip.dataset.mwIndex, 10));
+    } else {
+      setVideo(strip.dataset.cs, parseInt(strip.dataset.index, 10));
+    }
+    return;
+  }
 
   // Photography gallery item
   const photo = e.target.closest('.gallery-item');
   if (photo) { openLightbox(parseInt(photo.dataset.photo, 10)); return; }
+
 });
 
 document.addEventListener('keydown', (e) => {
@@ -1735,6 +1906,7 @@ window.addEventListener('popstate', (e) => {
    ============================================================ */
 history.replaceState({ view: 'home' }, '', '');
 buildCaseStudies();
+buildMoreWork();
 buildGallery();
 </script>
 
