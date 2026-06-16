@@ -382,7 +382,7 @@
       max-width: 1400px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 2fr 1fr;
       gap: 80px;
       align-items: start;
     }
@@ -1095,6 +1095,8 @@
       .nav-section-title { font-size: 9px; margin-bottom: 12px; }
       .nav-link { font-size: 22px; padding: 16px 0; }
 
+      #advertising-list { grid-template-columns: 1fr; }
+
       .header { padding: 0 24px; }
 
       .grid-view {
@@ -1132,6 +1134,14 @@
       .lightbox-nav { width: 40px; height: 40px; font-size: 16px; }
       .lightbox-prev { left: 12px; }
       .lightbox-next { right: 12px; }
+    }
+
+    #advertising-list {
+      display: grid;
+      grid-template-columns: auto auto;
+      column-gap: 85px;
+      row-gap: 0;
+      justify-content: start;
     }
 
     /* ── MORE WORK ── */
@@ -1463,7 +1473,7 @@ const advertising = [
   },
   {
     slug: 'mikes-hard',
-    title: "Mike's Hard Lemonade",
+    title: "Mike's Hard",
     videos: [
       { id: '268587544', title: 'Bird Party', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615683/thumb-14_wwecte.jpg' },
       { id: '268587491', title: 'Top 40', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615821/thumb-15_nptmgw.jpg' },
