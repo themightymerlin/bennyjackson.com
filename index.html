@@ -1297,6 +1297,12 @@
             <span class="nav-link-arrow">→</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" data-view="made-by-hand">
+            <span>Made By Hand</span>
+            <span class="nav-link-arrow">→</span>
+          </a>
+        </li>
       </ul>
     </div>
   </section>
@@ -1385,6 +1391,25 @@
 
   <footer>
     <p class="footer-copy">Photography by Benny Jackson.</p>
+  </footer>
+</section>
+
+<!-- ============================================================
+     PERSONAL VIEW: MADE BY HAND
+     ============================================================ -->
+<section class="view personal-view" id="view-made-by-hand">
+  <nav class="personal-nav">
+    <a class="personal-back" data-view="home">← Back</a>
+    <h1 class="header-title">Made By Hand</h1>
+    <div class="header-spacer"></div>
+  </nav>
+  <main>
+    <section class="gallery">
+      <div class="gallery-grid" id="woodGalleryGrid"></div>
+    </section>
+  </main>
+  <footer>
+    <p class="footer-copy">Woodworking by Benny Jackson.</p>
   </footer>
 </section>
 
@@ -1532,6 +1557,20 @@ const photos = [
   'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314474/27363042500_9cf2a3d649_o.jpg_phjdom.webp',
   'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314468/DSC00639.jpg_hxe6er.webp',
   'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781314461/DSC02301.jpg_rvel3b.webp'
+];
+
+const woodPhotos = [
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1782327919/woodworking-2_hsk3bt.png',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1782327932/woodworking-3_k1k8xa.png',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1782327929/woodworking-4_bvvz1a.png',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1782327928/woodworking-5_jswuyz.png',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1782327931/woodworking_wksadh.png',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1782327924/woodworking-8_sdiigv.png',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1782327923/woodworking-9_bpvbag.png',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1782327926/woodworking-6_grtcg8.png',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1782327925/woodworking-7_pltrdl.png',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1782327920/woodworking-10_lnb57m.png',
+  'https://res.cloudinary.com/dx8kswwgb/image/upload/v1782327921/woodworking-11_jhrhj0.png'
 ];
 
 /* ============================================================
@@ -1740,6 +1779,7 @@ function caseStudyBack(slug) {
    5. PHOTOGRAPHY GALLERY + LIGHTBOX
    ============================================================ */
 let currentImageIndex = 0;
+let currentPhotoSet = photos;
 
 function buildGallery() {
   const grid = document.getElementById('galleryGrid');
@@ -1751,10 +1791,22 @@ function buildGallery() {
   document.getElementById('totalCount').textContent = photos.length;
 }
 
-function openLightbox(index) {
+function buildWoodGallery() {
+  const grid = document.getElementById('woodGalleryGrid');
+  if (!grid) return;
+  grid.innerHTML = woodPhotos.map((src, i) =>
+    '<div class="gallery-item" data-woodphoto="' + i + '">' +
+      '<img src="' + src + '" alt="Woodworking ' + (i + 1) + '" loading="lazy">' +
+    '</div>'
+  ).join('');
+}
+
+function openLightbox(index, photoSet = photos) {
   currentImageIndex = index;
-  document.getElementById('lightboxImg').src = photos[index];
+  currentPhotoSet = photoSet;
+  document.getElementById('lightboxImg').src = photoSet[index];
   document.getElementById('currentIndex').textContent = index + 1;
+  document.getElementById('totalCount').textContent = photoSet.length;
   document.getElementById('lightbox').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -1765,14 +1817,14 @@ function closeLightbox() {
 }
 
 function nextImage() {
-  currentImageIndex = (currentImageIndex + 1) % photos.length;
-  document.getElementById('lightboxImg').src = photos[currentImageIndex];
+  currentImageIndex = (currentImageIndex + 1) % currentPhotoSet.length;
+  document.getElementById('lightboxImg').src = currentPhotoSet[currentImageIndex];
   document.getElementById('currentIndex').textContent = currentImageIndex + 1;
 }
 
 function prevImage() {
-  currentImageIndex = (currentImageIndex - 1 + photos.length) % photos.length;
-  document.getElementById('lightboxImg').src = photos[currentImageIndex];
+  currentImageIndex = (currentImageIndex - 1 + currentPhotoSet.length) % currentPhotoSet.length;
+  document.getElementById('lightboxImg').src = currentPhotoSet[currentImageIndex];
   document.getElementById('currentIndex').textContent = currentImageIndex + 1;
 }
 
@@ -1811,8 +1863,11 @@ document.addEventListener('click', (e) => {
   }
 
   // Photography gallery item
-  const photo = e.target.closest('.gallery-item');
-  if (photo) { openLightbox(parseInt(photo.dataset.photo, 10)); return; }
+  const photo = e.target.closest('.gallery-item[data-photo]');
+  if (photo) { openLightbox(parseInt(photo.dataset.photo, 10), photos); return; }
+
+  const woodPhoto = e.target.closest('.gallery-item[data-woodphoto]');
+  if (woodPhoto) { openLightbox(parseInt(woodPhoto.dataset.woodphoto, 10), woodPhotos); return; }
 
 });
 
@@ -1918,6 +1973,7 @@ history.replaceState({ view: 'home' }, '', '');
 buildCaseStudies();
 buildMoreWork();
 buildGallery();
+buildWoodGallery();
 </script>
 
 </body>
