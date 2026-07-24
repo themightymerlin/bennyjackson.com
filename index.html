@@ -572,6 +572,23 @@
 
     .case-study-view main { padding-top: 60px; }
 
+    /* STANDARD SPACING RULE: any "copy above content" block (intro text
+       sitting above a grid, gallery, or other content) uses 80px top,
+       80px bottom on desktop, so the gap before the copy matches the
+       gap after it. Reuse this pattern for future intro-style copy. */
+    .case-study-intro {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 80px 48px 80px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    @media (max-width: 768px) {
+      .case-study-intro { padding: 60px 24px 60px; }
+    }
+
     .grid-view {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -580,6 +597,11 @@
       max-width: 1600px;
       margin: 0 auto;
     }
+
+    /* When a case study has intro copy above it, the intro's own bottom
+       padding already provides the gap, so the grid's top padding is
+       dropped to avoid double spacing. */
+    .grid-view.has-intro { padding-top: 0 !important; }
 
     .grid-view .video-card:nth-child(-n+2) { grid-column: span 3; }
     .grid-view .video-card:nth-child(n+3) { grid-column: span 2; }
@@ -1435,6 +1457,7 @@ const advertising = [
   {
     slug: 'apple',
     title: 'Apple',
+    intro: 'Beyond the campaign work, I led launch and season-long social strategy for Apple TV+ originals including The Morning Show, Servant, SEE, Severance, The Oprah Conversation, and Luck, building the content that kept audiences coming back week over week, not just on premiere night.',
     videos: [
       { id: '785752002', title: 'Action Mode', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781287980/thumb_smhba6.jpg' },
       { id: '785748985', title: 'Apple TV+ Thriller Sizzle', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781289160/Every_Crime_sz5zl5.png' },
@@ -1608,7 +1631,8 @@ function buildCaseStudies() {
         '<div class="header-spacer"></div>' +
       '</header>' +
       '<main>' +
-        '<div class="grid-view" id="grid-' + cs.slug + '"></div>' +
+        (cs.intro ? '<p class="case-study-intro">' + escapeHtml(cs.intro) + '</p>' : '') +
+        '<div class="grid-view' + (cs.intro ? ' has-intro' : '') + '" id="grid-' + cs.slug + '"></div>' +
         '<div class="player-view" id="player-' + cs.slug + '">' +
           '<div class="video-player-container">' +
             '<iframe id="iframe-' + cs.slug + '" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" frameborder="0"></iframe>' +
