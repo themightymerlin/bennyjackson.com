@@ -2010,7 +2010,6 @@ function closeMenu() {
 }
 
 hamburger.addEventListener('click', () => { menuIsOpen ? closeMenu() : openMenu(); });
-menuOverlay.addEventListener('click', (e) => { if (e.target === menuOverlay) closeMenu(); });
 
 window.addEventListener('popstate', (e) => {
   const name = e.state?.view ?? 'home';
