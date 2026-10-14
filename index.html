@@ -1277,7 +1277,7 @@
 <section class="view is-active" id="view-home">
 
  <nav class="fixed-nav">
-  <img src="https://res.cloudinary.com/dx8kswwgb/image/upload/f_auto,fl_animated,q_auto,h_80/v1781279992/Comp-1_2_qhz8y9.gif" alt="Benny Jackson" class="nav-logo" data-view="home">
+  <img src="https://res.cloudinary.com/dx8kswwgb/image/upload/f_auto,q_auto,h_80/v1791988261/BJ_Lazer_logo_enoatz.png" alt="Benny Jackson" class="nav-logo" data-view="home">
 
   <div class="nav-title" data-view="home">
     Benny Jackson
@@ -1381,7 +1381,7 @@
       <div class="screenshot-container">
         <img
           class="screenshot-image"
-          src="https://res.cloudinary.com/dx8kswwgb/image/upload/f_auto,q_auto,w_2400/v1790204805/masterofsight_igzhjf.png"
+          src="https://res.cloudinary.com/dx8kswwgb/image/upload/f_auto,q_auto,w_1600/v1790204805/masterofsight_igzhjf.png"
           alt="Masters Of Sight archive"
         >
         <div class="screenshot-fade"></div>
@@ -1461,10 +1461,8 @@
 
 
 <script>
-function cld(url, t) {
-  if (!url || url.indexOf('res.cloudinary.com') === -1) return url;
-  if (/\/upload\/(?:[a-z]{1,3}_[^/]*)\//.test(url)) return url;
-  return url.replace('/upload/', '/upload/' + t + '/');
+function cld(url, w) {
+  return url.replace('/upload/', '/upload/f_auto,q_auto' + (w ? ',w_' + w : '') + '/');
 }
 
 /* ============================================================
@@ -1686,7 +1684,7 @@ function buildCaseStudies() {
     // Grid thumbnails
     document.getElementById('grid-' + cs.slug).innerHTML = cs.videos.map((v, i) =>
       '<div class="video-card" data-cs="' + cs.slug + '" data-index="' + i + '">' +
-        '<img src="' + cld(v.thumbnail, 'f_auto,q_auto,w_1000') + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
+        '<img src="' + cld(v.thumbnail, 900) + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
         '<div class="play-icon">&#9654;</div>' +
         '<div class="video-card-label">' + escapeHtml(v.title) + '</div>' +
       '</div>'
@@ -1695,7 +1693,7 @@ function buildCaseStudies() {
     // Filmstrip
     document.getElementById('filmstrip-' + cs.slug).innerHTML = cs.videos.map((v, i) =>
       '<div class="filmstrip-item' + (i === 0 ? ' is-active' : '') + '" data-cs="' + cs.slug + '" data-index="' + i + '">' +
-        '<img src="' + cld(v.thumbnail, 'f_auto,q_auto,w_400') + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
+        '<img src="' + cld(v.thumbnail, 400) + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
         '<div class="filmstrip-item-label">' + escapeHtml(v.title) + '</div>' +
       '</div>'
     ).join('');
@@ -1737,7 +1735,7 @@ function buildMoreWork() {
 
   document.getElementById('grid-more-work').innerHTML = moreWork.map((v, i) =>
     '<div class="video-card" data-mw-index="' + i + '">' +
-      '<img src="' + cld(v.thumbnail, 'f_auto,q_auto,w_1000') + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
+      '<img src="' + cld(v.thumbnail, 900) + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
       '<div class="play-icon">&#9654;</div>' +
       '<div class="video-card-label">' + escapeHtml(v.title) + '</div>' +
     '</div>'
@@ -1745,7 +1743,7 @@ function buildMoreWork() {
 
   document.getElementById('filmstrip-more-work').innerHTML = moreWork.map((v, i) =>
     '<div class="filmstrip-item' + (i === 0 ? ' is-active' : '') + '" data-mw-index="' + i + '">' +
-      '<img src="' + cld(v.thumbnail, 'f_auto,q_auto,w_400') + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
+      '<img src="' + cld(v.thumbnail, 400) + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
       '<div class="filmstrip-item-label">' + escapeHtml(v.title) + '</div>' +
     '</div>'
   ).join('');
@@ -1850,7 +1848,7 @@ function buildGallery() {
   const grid = document.getElementById('galleryGrid');
   grid.innerHTML = photos.map((src, i) =>
     '<div class="gallery-item" data-photo="' + i + '">' +
-      '<img src="' + cld(src, 'f_auto,q_auto,w_800') + '" alt="Photo ' + (i + 1) + '" loading="lazy">' +
+      '<img src="' + cld(src, 700) + '" alt="Photo ' + (i + 1) + '" loading="lazy">' +
     '</div>'
   ).join('');
   document.getElementById('totalCount').textContent = photos.length;
@@ -1861,7 +1859,7 @@ function buildWoodGallery() {
   if (!grid) return;
   grid.innerHTML = woodPhotos.map((src, i) =>
     '<div class="gallery-item" data-woodphoto="' + i + '">' +
-      '<img src="' + cld(src, 'f_auto,q_auto,w_800') + '" alt="Woodworking ' + (i + 1) + '" loading="lazy">' +
+      '<img src="' + cld(src, 700) + '" alt="Woodworking ' + (i + 1) + '" loading="lazy">' +
     '</div>'
   ).join('');
 }
@@ -1869,7 +1867,7 @@ function buildWoodGallery() {
 function openLightbox(index, photoSet = photos) {
   currentImageIndex = index;
   currentPhotoSet = photoSet;
-  document.getElementById('lightboxImg').src = cld(photoSet[index], 'f_auto,q_auto,w_2400');
+  document.getElementById('lightboxImg').src = cld(photoSet[index], 2000);
   document.getElementById('currentIndex').textContent = index + 1;
   document.getElementById('totalCount').textContent = photoSet.length;
   document.getElementById('lightbox').classList.add('active');
@@ -1883,13 +1881,13 @@ function closeLightbox() {
 
 function nextImage() {
   currentImageIndex = (currentImageIndex + 1) % currentPhotoSet.length;
-  document.getElementById('lightboxImg').src = cld(currentPhotoSet[currentImageIndex], 'f_auto,q_auto,w_2400');
+  document.getElementById('lightboxImg').src = cld(currentPhotoSet[currentImageIndex], 2000);
   document.getElementById('currentIndex').textContent = currentImageIndex + 1;
 }
 
 function prevImage() {
   currentImageIndex = (currentImageIndex - 1 + currentPhotoSet.length) % currentPhotoSet.length;
-  document.getElementById('lightboxImg').src = cld(currentPhotoSet[currentImageIndex], 'f_auto,q_auto,w_2400');
+  document.getElementById('lightboxImg').src = cld(currentPhotoSet[currentImageIndex], 2000);
   document.getElementById('currentIndex').textContent = currentImageIndex + 1;
 }
 
