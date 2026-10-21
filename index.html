@@ -16,9 +16,12 @@
     }(window.location));
   </script>
   <meta property="og:title" content="Benny Jackson" />
-  <meta property="og:description" content="Hands-on Art Director. Campaigns, shows, worlds." />
+  <meta property="og:description" content="Creative Director. Art Director by trade. Twenty years of brand work, plus a live product built with AI: Masters Of Sight." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://res.cloudinary.com/dx8kswwgb/image/upload/v1781287980/thumb_smhba6.jpg" />
+  <meta property="og:image" content="https://res.cloudinary.com/dx8kswwgb/image/upload/f_jpg,q_auto/v1792610597/og-share_nuedyu.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <title>Benny Jackson</title>
 
@@ -274,34 +277,55 @@
 
     .menu-close:hover { color: var(--accent); }
 
-    /* ── HERO (mobile fix #2: flush to top, svh height) ── */
+    /* ── HERO ──
+       The reel box is the video's own shape (16:9 until the player reports
+       its real size), full width, capped at 1920px like the strips. It sits
+       directly under the fixed nav and directly above the MOS band, so there
+       is never dead space around the video. On short windows the box is capped
+       to the viewport height and the video crops to cover. It is never letterboxed. */
+    :root { --hero-ratio: 1.7778; --nav-h: 64px; }
+
     .hero-section {
       position: relative;
       width: 100%;
-      height: 100vh;
-      height: 100svh;
+      max-width: 1920px;
+      aspect-ratio: var(--hero-ratio);
+      max-height: calc(100vh - var(--nav-h));
+      max-height: calc(100svh - var(--nav-h));
+      margin: var(--nav-h) auto 0;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      margin-top: -64px;
     }
 
     .hero-video-container {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
       z-index: 1;
       overflow: hidden;
+      container-type: size;
     }
 
+    /* Size the player to cover the box: wide enough and tall enough that no
+       bars can show, then center it. */
     .hero-video-container iframe {
-      width: 100%;
-      height: 100%;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: max(100cqw, calc(100cqh * var(--hero-ratio)));
+      height: max(100cqh, calc(100cqw / var(--hero-ratio)));
+      transform: translate(-50%, -50%);
+      border: 0;
       display: block;
-      transform: scale(1.1);
-      transform-origin: center;
+    }
+
+    /* Past 1920px the reel fades into the page like the strips do. */
+    @media (min-width: 1921px) {
+      .hero-video-container, .hero-overlay {
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+      }
     }
 
     .hero-overlay {
@@ -386,78 +410,149 @@
       pointer-events: all;
     }
 
-    /* ── NAVIGATION SECTIONS ── */
-    .nav-sections {
-      width: 100%;
-      padding: 120px 48px 180px 280px;
-      max-width: 1400px;
-      margin: 0 auto;
+    /* ── HOME STRIPS ──
+       Full-bleed 9:2 bands. The stack is capped at 1920px; past that the
+       sides fade to the page background so big monitors never see a
+       stretched (soft) image. Text sizes use cqw (relative to the strip),
+       so labels scale with the strip and stay aligned to the capped width. */
+    :root { --strip-gap: clamp(8px, 0.9vw, 17px); --gold: #e6c27e; }
+
+    .strip-stack {
+      max-width: 1920px;
+      margin: var(--strip-gap) auto 0;
+      padding-bottom: clamp(60px, 8vw, 140px);
       display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 80px;
-      align-items: start;
+      gap: var(--strip-gap);
+    }
+    .strip-group { display: grid; gap: var(--strip-gap); }
+
+    /* The fade is applied to the art (and its scrims) only, so labels and
+       buttons stay fully visible at the edge of the capped width. */
+    @media (min-width: 1921px) {
+      .strip picture, .strip::before, .strip::after {
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+      }
     }
 
-    .nav-section {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .nav-section-title {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
+    .strip {
+      position: relative;
       display: block;
-    }
-
-    .nav-items {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      list-style: none;
-    }
-
-    .nav-item { display: block; }
-    .nav-item:last-child { border-bottom: none; }
-
-    .nav-link {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px;
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
+      aspect-ratio: 9 / 2;
+      overflow: hidden;
+      container-type: inline-size;
+      background: var(--bg);
       color: var(--text);
       text-decoration: none;
-      padding: 20px 0;
-      transition: all 0.3s ease;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      transform: scaleX(1.30);
-      transform-origin: left;
       cursor: pointer;
     }
+    .strip picture { display: block; position: relative; width: 100%; height: 100%; }
+    .strip img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.95);
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.3s ease;
+    }
+    .strip:hover img, .strip:focus-visible img { transform: scale(1.03); filter: brightness(1); }
+    .strip:focus-visible { outline: 1px solid var(--accent); outline-offset: -1px; }
 
-    .nav-link:hover {
-      color: var(--accent);
-      padding-left: 8px;
+    /* Scrim lives in CSS so the exported art can stay clean. */
+    .strip-link::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10, 10, 10, 0.55) 0%, rgba(10, 10, 10, 0) 42%);
+      pointer-events: none;
     }
 
-    .nav-link-arrow {
-      font-size: 16px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      display: none;
+    .strip-label {
+      position: absolute;
+      left: 1.5cqw;
+      bottom: 1.1cqw;
+      z-index: 2;
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 900;
+      font-size: clamp(20px, 2.8cqw, 54px);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transform: scaleX(1.30);
+      transform-origin: left bottom;
+      transition: color 0.3s ease;
     }
+    .strip-link:hover .strip-label { color: var(--accent); }
 
-    .nav-link:hover .nav-link-arrow { opacity: 1; }
+    /* MOS band: live headline + two buttons over the art */
+    .strip-mos { cursor: default; }
+    /* Fallback warm gradient until the MOS art is set; the art sits on top of it. */
+    .strip-mos::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(120% 140% at 70% 30%, #3a2410 0%, #120d09 55%, #0a0a0a 100%);
+    }
+    .strip-mos::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(10, 10, 10, 0.88) 0%, rgba(10, 10, 10, 0.55) 40%, rgba(10, 10, 10, 0.15) 100%);
+      pointer-events: none;
+    }
+    .strip-mos:hover img { transform: none; filter: brightness(0.95); }
+    .strip-mos-text {
+      position: absolute;
+      left: 2.6cqw;
+      top: 0;
+      bottom: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.9cqw;
+    }
+    /* The Masters Of Sight logo image replaces typed text and scales with the strip. */
+    .strip-mos-title { margin: 0; line-height: 0; }
+    .strip-mos-logo { display: block; width: 36cqw; height: auto; }
+    .strip-mos-ctas {
+      position: absolute;
+      z-index: 2;
+      left: 45%;
+      right: 7.5%;
+      top: 50%;
+      transform: translateY(-50%);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 13%;
+    }
+    .strip-mos-ctas .cta-button {
+      justify-content: center;
+      padding: 1.6cqw 1cqw;
+      font-size: clamp(10px, 0.95cqw, 18px);
+      letter-spacing: 0.14em;
+      color: #fff;
+      border-color: #fff;
+      background: rgba(10, 10, 10, 0.55);
+      white-space: nowrap;
+    }
+    .strip-mos-ctas .cta-button:hover { color: #fff; border-color: #fff; background: rgba(255, 255, 255, 0.16); }
+
+    /* Phones: strips keep the same 9:2 shape and simply scale down.
+       Only the MOS band reflows, because it carries live text and buttons. */
+    @media (max-width: 768px) {
+      .strip-label { font-size: clamp(14px, 2.8cqw, 54px); }
+      .strip-mos { aspect-ratio: auto; padding: 36px 20px 32px; }
+      .strip-mos-text { position: relative; left: auto; top: auto; bottom: auto; gap: 10px; }
+      .strip-mos-logo { width: min(78cqw, 340px); }
+      .strip-mos-ctas {
+        position: relative; z-index: 2; left: auto; right: auto; top: auto; transform: none;
+        grid-template-columns: 1fr; row-gap: 12px; margin-top: 28px;
+      }
+      .strip-mos-ctas .cta-button { padding: 14px 16px; font-size: 11px; }
+      .strip-mos > picture { position: absolute; inset: 0; }
+    }
 
     /* ── SCROLL HINT ── */
     .scroll-hint {
@@ -829,98 +924,131 @@
 
 }
 
-    /* ── MASTERS OF SIGHT VIEW ── */
-    .mos-intro {
-      padding: 140px 48px 100px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
+    /* ── MASTERS OF SIGHT CASE STUDY ── */
+    .mc-page { padding-top: 64px; overflow-x: clip; }
+    .mc-wrap { max-width: 848px; margin: 0 auto; padding: 0 24px; }
+    .mc-wide { max-width: 1248px; margin: 0 auto; padding: 0 24px; }
+    .mc-section { padding-top: clamp(80px, 10vw, 140px); }
 
-    .intro-eyebrow {
-      font-size: 10px;
+    .mc-hero { padding-top: clamp(56px, 8vw, 110px); }
+    .mc-eyebrow {
+      font-size: 11px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+    }
+    .mc-logo { display: block; width: 100%; max-width: 560px; height: auto; }
+
+    .mc-prose p { font-size: 16px; line-height: 1.9; color: var(--text); margin-bottom: 20px; }
+    .mc-prose p:last-child { margin-bottom: 0; }
+    .mc-intro { margin-top: clamp(32px, 4vw, 48px); }
+    .mc-intro p { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.8; }
+
+    .mc-facts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: clamp(40px, 5vw, 64px);
+      padding-top: 28px;
+      border-top: 0.5px solid rgba(255, 255, 255, 0.14);
+    }
+    .mc-fact-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .mc-fact-text { font-size: 14px; line-height: 1.7; color: rgba(240, 236, 228, 0.78); }
+
+    .mc-quote {
+      margin-top: clamp(40px, 5vw, 64px);
+      padding-left: 24px;
+      border-left: 2px solid var(--accent);
+      font-size: clamp(20px, 2.6vw, 30px);
+      font-weight: 300;
+      line-height: 1.4;
+      color: var(--text);
     }
 
-    .mos-title {
+    /* Section headings use the site's stretched Bebas. The width is pre-shrunk so
+       the stretched text still fits its column and never overflows on phones. */
+    .mc-h2 {
       font-family: 'Bebas Neue', sans-serif;
       font-weight: 900;
-      font-size: clamp(48px, 8vw, 90px);
-      line-height: 0.85;
+      font-size: clamp(30px, 4vw, 44px);
+      line-height: 0.95;
       letter-spacing: -0.02em;
       text-transform: uppercase;
-      display: inline-block;
+      color: var(--text);
+      width: calc(100% / 1.3);
       transform: scaleX(1.30);
       transform-origin: left center;
-      color: var(--text);
-      margin-bottom: 32px;
+      margin-bottom: 28px;
+      padding-top: 28px;
+      border-top: 0.5px solid rgba(255, 255, 255, 0.16);
     }
 
-    .mos-body {
-      font-size: 16px;
-      color: var(--text);
-      max-width: 800px;
-      line-height: 1.9;
-    }
-
-    .mos-body p { margin-bottom: 20px; }
-    .mos-body p:last-child { margin-bottom: 0; }
-
-    .screenshot-wrapper {
-      position: relative;
-      width: 100%;
-      padding: 60px 0 0 0;
-      overflow: hidden;
-    }
-
-    .screenshot-container {
-      position: relative;
-      max-width: 1200px;
-      margin: 0 auto;
-      aspect-ratio: 3000 / 1747;
-    }
-
-    .screenshot-image {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+    .mc-fig { margin: 0; }
+    .mc-fig img {
       display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #111;
     }
+    .mc-cap { font-size: 16px; line-height: 1.9; color: var(--text); margin-top: 16px; max-width: 800px; }
+    .mc-cap strong { font-weight: 500; color: var(--text); }
+    .mc-figs { display: grid; gap: clamp(40px, 5vw, 64px); margin-top: 8px; }
+    .mc-trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; align-items: start; }
 
-    .screenshot-fade {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 80%;
-      background: linear-gradient(to bottom, rgba(10, 10, 10, 0) 20%, rgba(10, 10, 10, 0.99) 70%);
-      pointer-events: none;
+    .mc-video {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: clamp(40px, 5vw, 64px);
     }
-
-    .mobile-break { display: none; }
-
-    .cta-overlay {
+    .mc-video-play { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+    .mc-video-play img { display: block; width: 100%; height: 100%; object-fit: cover; border: 0; border-radius: 0; }
+    .mc-video-icon {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 84px;
+      height: 84px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: flex-end;
-      padding: 60px 48px 48px;
-      text-align: center;
-      min-height: 400px;
+      justify-content: center;
+      padding-left: 5px;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      background: rgba(10, 10, 10, 0.55);
+      color: #fff;
+      font-size: 28px;
+      transition: background 0.3s ease;
     }
+    .mc-video-play:hover .mc-video-icon, .mc-video-play:focus-visible .mc-video-icon { background: rgba(255, 255, 255, 0.18); }
+    .mc-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-    .cta-text {
-      font-size: 16px;
-      color: var(--text);
-      max-width: 600px;
-      margin-bottom: 20px;
-      line-height: 1.8;
+    .mc-items { display: grid; gap: 28px; margin-top: 28px; }
+    .mc-item { padding-left: 20px; border-left: 1px solid rgba(74, 231, 231, 0.4); font-size: 16px; line-height: 1.9; }
+    .mc-item strong { display: block; font-weight: 500; margin-bottom: 4px; }
+
+    .mc-end { text-align: center; padding: clamp(72px, 9vw, 120px) 24px clamp(80px, 10vw, 140px); }
+
+    @media (max-width: 768px) {
+      .mc-wrap, .mc-wide { padding: 0 20px; }
+      .mc-facts { grid-template-columns: 1fr; gap: 24px; }
+      .mc-trio { grid-template-columns: 1fr; }
+      .mc-video-icon { width: 64px; height: 64px; font-size: 22px; }
     }
 
     .cta-button {
@@ -1087,18 +1215,12 @@
        ============================================================ */
 
     @media (max-width: 1000px) {
-      .nav-sections {
-        grid-template-columns: 1fr;
-        gap: 100px;
-      }
       .grid-view { grid-template-columns: repeat(4, 1fr); }
       .grid-view .video-card:nth-child(-n+2) { grid-column: span 2; }
       .grid-view .video-card:nth-child(n+3) { grid-column: span 4; }
     }
 
     @media (max-width: 900px) {
-      .mos-intro { padding: 100px 48px 100px; }
-      .cta-overlay { padding: 50px 32px 40px; min-height: 320px; }
       .personal-nav { padding: 0 32px; }
       .photo-intro { padding: 100px 32px 60px; }
       .gallery { padding: 0 32px 80px; }
@@ -1121,15 +1243,6 @@
       }
       .unmute-button img { width: 16px; height: 16px; }
 
-      .nav-sections {
-        padding: 80px 24px 120px 84px;
-        gap: 80px;
-      }
-      .nav-section-title { font-size: 9px; margin-bottom: 12px; }
-      .nav-link { font-size: 22px; padding: 16px 0; }
-
-      #advertising-list { grid-template-columns: 1fr; }
-
       .header { padding: 0 24px; }
 
       .grid-view {
@@ -1148,12 +1261,6 @@
     }
 
     @media (max-width: 600px) {
-      .mos-intro { padding: 100px 20px 60px; }
-      .mos-title { font-size: clamp(36px, 10vw, 60px); }
-      .mos-body { font-size: 14px; }
-      .cta-overlay { padding: 40px 20px 32px; min-height: 280px; }
-      .cta-text { font-size: 14px; margin-bottom: 24px; }
-      .mobile-break { display: inline; }
       .cta-button { font-size: 10px; padding: 12px 32px; }
       .personal-nav { padding: 0 20px; }
 
@@ -1169,24 +1276,7 @@
       .lightbox-next { right: 12px; }
     }
 
-    #advertising-list {
-      display: grid;
-      grid-template-columns: auto auto;
-      column-gap: 85px;
-      row-gap: 0;
-      justify-content: start;
-    }
-
     /* ── MORE WORK ── */
-    .more-work-link {
-      opacity: 0.55;
-      margin-top: 16px;
-      border-top: 0.5px solid var(--border);
-      padding-top: 24px !important;
-      font-style: italic;
-    }
-    .more-work-link:hover { opacity: 1; }
-
     .more-work-eyebrow {
       font-size: 10px;
       letter-spacing: 0.18em;
@@ -1246,9 +1336,9 @@
 <div class="menu-overlay" id="menuOverlay">
   <div class="menu-content" id="menu-content-main">
     <div class="menu-content-text" style="text-align: left; max-width: 600px; margin: 0 auto;">
-      <p style="margin-bottom: 16px;">I'm Benny. CD by title, art director by trade. Apple, Heineken, Lincoln, Samsung, GE, Vitamin Water, State Farm, and a few dozen others you'd recognize. I've worked every rung from junior art director to GCD, and the part I always loved most was making the thing. That's the job I'm after. The thread through all of it: ideas that feel discovered, not manufactured.</p>
-      <p style="margin-bottom: 16px;">I concept it, design it, shoot it, cut it, and get it out the door. Open to freelance, contract, and full-time roles with teams that want someone who ships.</p>
-      <p style="margin-bottom: 16px;">I founded Masters Of Sight, a curated archive of the photographers, filmmakers, designers, and creators who inspire me. When I'm not working on brands, I'm usually behind a camera, in the woodshop, or developing original story worlds.</p>
+      <p style="margin-bottom: 16px;">I'm Benny. Creative Director by title, Art Director by trade. More than twenty years at agencies, including TBWA\Media Arts Lab, where Apple was the only client, on brands like Heineken, Samsung, Lincoln, GE, Vitamin Water, and State Farm. I've worked every rung from Junior Art Director to GCD, and the part I loved most never changed: making the thing. The thread through all of it is ideas that feel discovered, not manufactured.</p>
+      <p style="margin-bottom: 16px;">I concept it, design it, shoot it, cut it, and get it out the door. Lately I've added AI to that list, as a proficient learner rather than an expert, which turns out to be a handy thing to be: curious, hands-on, and honest about what the tools get wrong. Open to freelance, contract, and full-time roles with teams that want someone who ships.</p>
+      <p style="margin-bottom: 16px;">The proof is Masters Of Sight, a living archive of taste I founded and built with AI: a curated record of the photographers, filmmakers, designers, and game makers who taught me how to see. When I'm not working on brands, I'm usually behind a camera, in the woodshop, or developing original story worlds.</p>
       <p style="margin-bottom: 16px;">Different mediums. Same pursuit: meaningful ideas, thoughtful craft, and work that leaves a mark.</p>
     </div>
     <div style="max-width: 600px; margin: 0 auto; text-align: left;">
@@ -1315,41 +1405,31 @@
     </div>
   </section>
 
-  <!-- NAVIGATION SECTIONS -->
-  <section class="nav-sections">
-    <div class="nav-section">
-      <h2 class="nav-section-title">Advertising</h2>
-      <!-- Advertising links are generated from the data below -->
-      <ul class="nav-items" id="advertising-list"></ul>
+  <!-- HOME STRIPS (generated from the data below, except the MOS band) -->
+  <section class="strip-stack" id="strip-stack">
+
+    <div class="strip strip-mos" id="strip-mos">
+      <!-- background art is injected by buildHomeStrips() once homeCovers.mos is set -->
+      <div class="strip-mos-text">
+        <h2 class="strip-mos-title"><img class="strip-mos-logo" alt="Masters Of Sight, a living archive of taste." decoding="async"
+          src="https://res.cloudinary.com/dx8kswwgb/image/upload/f_auto,q_auto,c_limit,w_1000/v1792608228/MOS_LOGO_dcqyzq.png"
+          srcset="https://res.cloudinary.com/dx8kswwgb/image/upload/f_auto,q_auto,c_limit,w_600/v1792608228/MOS_LOGO_dcqyzq.png 600w, https://res.cloudinary.com/dx8kswwgb/image/upload/f_auto,q_auto,c_limit,w_1000/v1792608228/MOS_LOGO_dcqyzq.png 1000w, https://res.cloudinary.com/dx8kswwgb/image/upload/f_auto,q_auto,c_limit,w_1400/v1792608228/MOS_LOGO_dcqyzq.png 1400w"
+          sizes="(min-width: 1921px) 691px, (min-width: 769px) 36vw, 78vw"></h2>
+      </div>
+      <div class="strip-mos-ctas">
+        <a class="cta-button" href="/masters-of-sight" data-view="masters-of-sight">Read the case study <span>→</span></a>
+        <a class="cta-button" href="https://mastersofsight.com" target="_blank" rel="noopener">Visit Masters Of Sight <span>→</span></a>
+      </div>
     </div>
 
-    <div class="nav-section">
-      <h2 class="nav-section-title">Personal</h2>
-      <ul class="nav-items">
-        <li class="nav-item">
-          <a class="nav-link" data-view="masters-of-sight">
-            <span>Masters Of Sight</span>
-            <span class="nav-link-arrow">→</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-view="photography">
-            <span>Photography</span>
-            <span class="nav-link-arrow">→</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-view="made-by-hand">
-            <span>Made By Hand</span>
-            <span class="nav-link-arrow">→</span>
-          </a>
-        </li>
-      </ul>
-    </div>
+    <div class="strip-group" id="strips-advertising"></div>
+
+    <div class="strip-group" id="strips-personal"></div>
+
   </section>
 
   <footer>
-    <p class="footer-copy">Benny Jackson · Art Director</p>
+    <p class="footer-copy">Benny Jackson · Creative Director. Art Director by trade.</p>
   </footer>
 </section>
 
@@ -1366,34 +1446,141 @@
 
     <div class="header-spacer"></div>
   </nav>
-  <main>
-    <section class="mos-intro">
-      <div class="mos-body">
-        <p>Masters Of Sight started as a private list: the photographers, cinematographers, directors, designers, and game makers who rewired the way I look at things. Twenty years in advertising turned that list into an obsession. The obsession turned into a visual magazine of taste.</p>
-        <p>Every master is hand-picked. No algorithm, no committee, no submissions inbox. Roger Deakins shares a wall with Hayao Miyazaki. Paul Rand sits across from Hideo Kojima. Thelma Schoonmaker gets a room of her own, because a cut is a fingerprint too. Different tools, same nerve. The connective tissue was never the medium. It's intent.</p>
-        <p>The archive keeps widening. Editors and colorists now stand beside the directors and cinematographers whose films they shape. Every master has a real page, and you can pin the ones that haunt you to a board of your own. The Stack, The Moment, and The Encounter carry the argument onto Instagram and YouTube, one scene, one frame, one obsession at a time.</p>
-        <p>I run all of it. The curation, the writing, the video, the code. One person, one eye, zero compromises negotiated.</p>
-        <p>The product was never the list. It's taste.</p>
-      </div>
+  <main class="mc-page">
+
+    <header class="mc-wrap mc-hero">
+      <p class="mc-eyebrow">Case study</p>
+      <img class="mc-logo" data-mc="logo" data-kind="logo" alt="Masters Of Sight, a living archive of taste" decoding="async">
+    </header>
+
+    <section class="mc-wrap mc-prose mc-intro">
+      <p>Masters Of Sight started as a private list: the photographers, cinematographers, directors, designers, and game makers who rewired the way I look at things. Twenty years in advertising turned that list into an obsession. The obsession needed a home.</p>
+      <p>I'm a learner, and a proficient one. I directed Claude Code to build the whole product, one prompt at a time, and I kept the veto. This page covers how it works, how I work with the AI, and the places it confidently got things wrong.</p>
     </section>
 
-    <section class="screenshot-wrapper">
-      <div class="screenshot-container">
-        <img
-          class="screenshot-image"
-          src="https://res.cloudinary.com/dx8kswwgb/image/upload/f_auto,q_auto,w_1600/v1790204805/masterofsight_igzhjf.png"
-          alt="Masters Of Sight archive"
-        >
-        <div class="screenshot-fade"></div>
-        <div class="cta-overlay">
-          <p class="cta-text">Explore the full archive. Learn from the best.<br class="mobile-break"> Understand how they think.</p>
-          <a href="https://mastersofsight.com" target="_blank" rel="noopener" class="cta-button">
-            Visit Masters Of Sight
-            <span>→</span>
-          </a>
+    <section class="mc-wrap">
+      <div class="mc-facts">
+        <div>
+          <p class="mc-fact-label">Live</p>
+          <p class="mc-fact-text">A working product at mastersofsight.com. Not a mockup, not a side gallery.</p>
+        </div>
+        <div>
+          <p class="mc-fact-label">Findable</p>
+          <p class="mc-fact-text">A real, crawlable page for every master, built to be found.</p>
+        </div>
+        <div>
+          <p class="mc-fact-label">Free accounts</p>
+          <p class="mc-fact-text">Sign in with a magic link or Google, save masters to your own Board, and delete the account yourself, cleanly, anytime.</p>
+        </div>
+      </div>
+      <blockquote class="mc-quote">The archive is the database. AI is the navigation layer.</blockquote>
+    </section>
+
+    <section class="mc-wide">
+      <div class="mc-video" id="mcVideo">
+        <button class="mc-video-play" type="button" aria-label="Play the Masters Of Sight walkthrough">
+          <img data-mc="videoPoster" data-kind="wide" alt="" decoding="async">
+          <span class="mc-video-icon" aria-hidden="true">▶</span>
+        </button>
+      </div>
+      <p class="mc-cap">A quick walkthrough of the live site.</p>
+    </section>
+
+    <section class="mc-wrap mc-prose mc-section">
+      <h2 class="mc-h2">The list that got out of hand</h2>
+      <p>Every master is hand-picked. No algorithm, no committee, no submissions inbox. Roger Deakins shares a wall with Hayao Miyazaki. Paul Rand sits across from Hideo Kojima. Thelma Schoonmaker gets a room of her own, because a cut is a fingerprint too. Different tools, same nerve. The connective tissue was never the medium. It's intent.</p>
+      <p>The archive keeps widening. Editors and colorists now stand beside the directors and cinematographers whose films they shape. The Stack, The Moment, and The Encounter carry the argument onto Instagram and YouTube, one scene, one frame, one obsession at a time.</p>
+    </section>
+
+    <section class="mc-wrap mc-prose mc-section">
+      <h2 class="mc-h2">The problem with a list</h2>
+      <p>A list can't be browsed by feel. It can't be saved, filtered, compared, or argued with. It tells you who, never why, and the why is the entire point. I wanted something where a creative who knows how a piece of work should feel could find the person whose work would teach them how to get there.</p>
+      <p>So the job was to turn a private canon into a product. I considered Instagram, but an entire archive living inside someone else's feed felt wrong. Notion worked for a while, then I hit the ceiling on design and functionality. I wanted to control every pixel, and I didn't love the idea of years of work depending on a service that could change its terms or disappear overnight.</p>
+    </section>
+
+    <section class="mc-section">
+      <div class="mc-wrap">
+        <h2 class="mc-h2">What it does today</h2>
+      </div>
+      <div class="mc-wide">
+        <div class="mc-figs">
+          <figure class="mc-fig">
+            <img data-mc="home" data-kind="wide" alt="The Masters Of Sight homepage with its rotating cover" loading="lazy" decoding="async">
+            <figcaption class="mc-cap"><strong>The archive.</strong> Photographers, cinematographers, directors, designers, game worldbuilders, editors, and colorists, all in one room, filterable by discipline.</figcaption>
+          </figure>
+          <figure class="mc-fig">
+            <img data-mc="search" data-kind="wide" alt="Live search results with the Follow the thread row" loading="lazy" decoding="async">
+            <figcaption class="mc-cap"><strong>Search that talks like you do.</strong> Ask it the way you'd ask a friend: "Who shot...?" Results update as you type, and a "Follow the thread" row points you to neighboring masters.</figcaption>
+          </figure>
+          <figure class="mc-fig">
+            <div class="mc-trio">
+              <img data-mc="master" data-i="0" data-kind="third" alt="A Masters Of Sight master page, view 1 of 3" loading="lazy" decoding="async">
+              <img data-mc="master" data-i="1" data-kind="third" alt="A Masters Of Sight master page, view 2 of 3" loading="lazy" decoding="async">
+              <img data-mc="master" data-i="2" data-kind="third" alt="A Masters Of Sight master page, view 3 of 3" loading="lazy" decoding="async">
+            </div>
+            <figcaption class="mc-cap"><strong>Real pages for every master.</strong> Not a name and a thumbnail. A tight bio, five specific traits, major works, and a gallery that runs edge to edge.</figcaption>
+          </figure>
+          <figure class="mc-fig">
+            <img data-mc="ifYouLike" data-kind="wide" alt="The hand-picked If you like row on a master page" loading="lazy" decoding="async">
+            <figcaption class="mc-cap"><strong>"If you like..."</strong> A hand-picked row that crosses disciplines on purpose.</figcaption>
+          </figure>
+          <figure class="mc-fig">
+            <img data-mc="board" data-kind="wide" alt="A saved Board, sorted by discipline" loading="lazy" decoding="async">
+            <figcaption class="mc-cap"><strong>A Board of your own.</strong> Sign in, save the masters who haunt you, and the Board sorts them by discipline. Free, and you can delete your account yourself, cleanly, anytime.</figcaption>
+          </figure>
         </div>
       </div>
     </section>
+
+    <section class="mc-wrap mc-prose mc-section">
+      <h2 class="mc-h2">How it's built</h2>
+      <p>Masters Of Sight is a static site on Eleventy, deployed automatically from GitHub, with images served through Cloudinary and Supabase handling free accounts, by magic link or Google. Every master has a real, crawlable page. It's fast because almost nothing about it is dynamic.</p>
+      <p>Claude Code is my development partner. I direct, it drafts, and I decide what survives. I run the curation, the writing, and the video, and I direct the build, which means every decision has one owner and nobody to blame.</p>
+    </section>
+
+    <section class="mc-wrap mc-prose mc-section">
+      <h2 class="mc-h2">How I work with the AI</h2>
+      <p>I'm still learning this, and I've learned it by doing. Here's the system I landed on, built to catch my mistakes as well as the AI's: a brief, a QA gate, and a veto. It keeps evolving.</p>
+      <div class="mc-items">
+        <div class="mc-item"><strong>A living rulebook.</strong> One working document holds the editorial law, the design precedents, and the reasons behind every call. When a decision gets made, it gets written down once, so the AI never re-litigates it.</div>
+        <div class="mc-item"><strong>One step at a time.</strong> I give the AI one task, read what comes back, then give the next. Layered prompts hide mistakes.</div>
+        <div class="mc-item"><strong>A gate before anything goes live.</strong> Every change is built and checked locally. Nothing ships until I say so, and an automated validator refuses to deploy data that breaks the rules.</div>
+        <div class="mc-item"><strong>A human makes the final call.</strong> Always.</div>
+      </div>
+    </section>
+
+    <section class="mc-wrap mc-prose mc-section">
+      <h2 class="mc-h2">Where the AI got it wrong</h2>
+      <p>This is the part most case studies skip. Mine includes it, because directing an AI well is mostly about catching what it confidently gets wrong. Each mistake below became a rule.</p>
+      <div class="mc-items">
+        <div class="mc-item"><strong>The design had no soul.</strong> First pass: generic fonts, a boring layout, no point of view. It was competent and forgettable. I tested a light mode and killed it because it lost all impact. The site stays dark, and I own the look.</div>
+        <div class="mc-item"><strong>It felt clunky.</strong> Buttons were off. Things shifted on click. Mobile behaved like a different site. None of that shows up in code review. It took a human eye and a thumb. Now every visual change gets checked on desktop and mobile before it goes anywhere.</div>
+        <div class="mc-item"><strong>It couldn't see the ripple.</strong> Change one thing and something else quietly broke, and the AI would never flag it. A video sitting in the wrong spot in one gallery taught me that. It became a rule, then an automated check that now covers every profile. The AI also writes prompts from stale memory of the file, so every instruction now starts by re-reading the live code instead of trusting last session's line numbers.</div>
+        <div class="mc-item"><strong>It built things that worked and weighed too much.</strong> Pages loaded fine and carried far more image data than they needed. I caught it, and we capped image sizes at render time.</div>
+      </div>
+      <p style="margin-top: 28px;">AI is fast. Knowing what's good, and catching what isn't, is still the job.</p>
+    </section>
+
+    <section class="mc-wrap mc-prose mc-section">
+      <h2 class="mc-h2">The intake workflow</h2>
+      <p>Adding a master isn't a form, it's a process. I research the person and go deep into their work, using their own sites, interviews, articles, and film credits to write a bio and traits that stick to a strict editorial standard. Film stills come from Shotdeck and IMDb, and photography comes from the artists' own sites and public-facing partner sites. Images live on Cloudinary. Videos link directly to YouTube or Vimeo, so everything points back to the original source.</p>
+      <p>Early on, a single profile took a long time because my process wasn't refined. Today the research is still entirely mine, but a quick intake form hands the details to Claude, which turns them into code. Claude Code builds the page locally, I check it, and only then does it go live. Every master clears the same bar, and a human makes the final call.</p>
+    </section>
+
+    <section class="mc-wrap mc-prose mc-section">
+      <h2 class="mc-h2">What's live, and what's next</h2>
+      <p><strong>Live:</strong> the full archive, master pages, live search, Boards, and an ongoing run of video series on Instagram and YouTube.</p>
+      <p><strong>Next, in this order:</strong> first the content layer, with deeper entry points and a "why they matter" paragraph for every master. Then a metadata schema that describes each master's work in structured, searchable terms. Then Find Your Vision, an AI layer that searches my editorial canon instead of the open internet.</p>
+      <p>The order matters, because the AI is only as good as the taste underneath it.</p>
+    </section>
+
+    <section class="mc-end">
+      <a href="https://mastersofsight.com" target="_blank" rel="noopener" class="cta-button">
+        Visit Masters Of Sight
+        <span>→</span>
+      </a>
+    </section>
+
   </main>
 
   <footer>
@@ -1479,6 +1666,7 @@ function cld(url, w) {
 const advertising = [
   {
     slug: 'apple',
+    cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792604112/Apple_lqburc.png',
     title: 'Apple',
     intro: 'Beyond the campaign work, I led launch and season-long social strategy for Apple TV+ originals including The Morning Show, Servant, SEE, Severance, The Oprah Conversation, and Luck, building the content that kept audiences coming back week over week, not just on premiere night. Additional social work, including other Apple TV+ titles, available on request.',
     videos: [
@@ -1490,18 +1678,8 @@ const advertising = [
     ]
   },
   {
-    slug: 'state-farm',
-    title: 'State Farm',
-    videos: [
-      { id: '12039085', title: 'Hot Tub', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309200/thumb-14_dlhkrh.jpg' },
-      { id: '12039018', title: 'Parking Lot', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309546/thumb-16_f06jbz.jpg' },
-      { id: '17315449', title: 'Anniversary', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309393/thumb-15_kj7nai.jpg' },
-      { id: '19128656', title: 'Buffalo', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309798/thumb-18_opzsjc.jpg' },
-      { id: '22484289', title: 'Bob Barker', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309946/thumb-19_gedhra.jpg' }
-    ]
-  },
-  {
     slug: 'cup-noodles',
+    cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792604143/Cup_Noodles_gk13r3.png',
     title: 'Cup Noodles',
     videos: [
       { id: '1128289030', title: 'All Too Much', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781310484/thumb-6_nosfic.jpg' },
@@ -1512,18 +1690,8 @@ const advertising = [
     ]
   },
   {
-    slug: 'carls-jr',
-    title: "Carl's Jr.",
-    videos: [
-      { id: '256425904', title: 'Open Sesame', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311282/thumb-21_o8xzux.jpg' },
-      { id: '268587582', title: 'Pretty Penny', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311402/thumb-22_ytdtyp.jpg' },
-      { id: '256425383', title: 'Whoa Nelly', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311497/thumb-23_agbg8y.jpg' },
-      { id: '274776586', title: 'Pure Temptation', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311594/thumb-24_mexkil.jpg' },
-      { id: '274776502', title: 'Devils Trance', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311690/thumb-25_tr95hi.jpg' }
-    ]
-  },
-  {
     slug: 'dish',
+    cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792604151/DISH_mbchi6.png',
     title: 'DISH',
     videos: [
       { id: '103848801', title: 'Tater Skins', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311938/thumb-26_uitmkr.jpg' },
@@ -1534,18 +1702,8 @@ const advertising = [
     ]
   },
   {
-    slug: 'craftsman',
-    title: 'Craftsman',
-    videos: [
-      { id: '115808445', title: 'Love. Making. Mini Documentary', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781614916/thumb-3_caq6e2.jpg' },
-      { id: '115810331', title: 'Love. Making.', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615076/thumb-4_c0rhy2.jpg' },
-      { id: '123496225', title: 'Pro Series', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781614790/thumb-2_cgggjn.jpg' },
-      { id: '123344465', title: 'Factory', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615360/thumb-6_fncqyp.jpg' },
-      { id: '122664405', title: 'Keep It In The Family', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615560/thumb-13_wxjpbn.jpg' }
-    ]
-  },
-  {
     slug: 'autozone',
+    cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792604120/AutoZone_htraar.png',
     title: 'AutoZone',
     videos: [
       { id: '209246335', title: 'Drifter', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1788014531/Drifter_dnitr5.png' },
@@ -1556,8 +1714,45 @@ const advertising = [
     ]
   },
   {
+    slug: 'state-farm',
+    cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792604191/State_Farm_q2cl1x.png',
+    title: 'State Farm',
+    videos: [
+      { id: '12039085', title: 'Hot Tub', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309200/thumb-14_dlhkrh.jpg' },
+      { id: '12039018', title: 'Parking Lot', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309546/thumb-16_f06jbz.jpg' },
+      { id: '17315449', title: 'Anniversary', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309393/thumb-15_kj7nai.jpg' },
+      { id: '19128656', title: 'Buffalo', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309798/thumb-18_opzsjc.jpg' },
+      { id: '22484289', title: 'Bob Barker', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781309946/thumb-19_gedhra.jpg' }
+    ]
+  },
+  {
+    slug: 'carls-jr',
+    cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792604127/Carl_s_Jr__bbqyrz.png',
+    title: "Carl's Jr.",
+    videos: [
+      { id: '256425904', title: 'Open Sesame', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311282/thumb-21_o8xzux.jpg' },
+      { id: '268587582', title: 'Pretty Penny', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311402/thumb-22_ytdtyp.jpg' },
+      { id: '256425383', title: 'Whoa Nelly', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311497/thumb-23_agbg8y.jpg' },
+      { id: '274776586', title: 'Pure Temptation', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311594/thumb-24_mexkil.jpg' },
+      { id: '274776502', title: 'Devils Trance', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781311690/thumb-25_tr95hi.jpg' }
+    ]
+  },
+  {
+    slug: 'craftsman',
+    cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792604135/Craftsman_jbwswy.png',
+    title: 'Craftsman',
+    videos: [
+      { id: '115808445', title: 'Love. Making. Mini Documentary', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781614916/thumb-3_caq6e2.jpg' },
+      { id: '115810331', title: 'Love. Making.', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615076/thumb-4_c0rhy2.jpg' },
+      { id: '123496225', title: 'Pro Series', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781614790/thumb-2_cgggjn.jpg' },
+      { id: '123344465', title: 'Factory', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615360/thumb-6_fncqyp.jpg' },
+      { id: '122664405', title: 'Keep It In The Family', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615560/thumb-13_wxjpbn.jpg' }
+    ]
+  },
+  {
     slug: 'mikes-hard',
-    title: "Mike's Hard",
+    cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792604167/Mikes_Hard_Lemonade_duandt.png',
+    title: "Mike's Hard Lemonade",
     videos: [
       { id: '268587544', title: 'Bird Party', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615683/thumb-14_wwecte.jpg' },
       { id: '268587491', title: 'Top 40', thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781615821/thumb-15_nptmgw.jpg' },
@@ -1567,6 +1762,17 @@ const advertising = [
     ]
   }
 ];
+
+/* Homepage strips that are not case studies.
+   One 9:2 image per strip. It scales proportionally on every screen,
+   phones included. One exception: the MOS band reflows into a taller block on phones, so it also has a 2:1 phone image (coverMobile). */
+const homeCovers = {
+  mos:         { cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792607150/Masters_Of_Sight_as6xml.png',
+                 coverMobile: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792607147/MOS_1600x800_sntifj.png' },
+  moreWork:    { cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792604175/More_Work_sq2rb2.png' },
+  photography: { cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792604183/Photography_eo84h4.png' },
+  madeByHand:  { cover: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792604160/Made_By_Hand_owxxrc.png' }
+};
 
 const moreWork = [
   { id: '65326587',   title: 'Dos Equis — Yellow',             thumbnail: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1781616741/thumb-20_lze4r5.jpg' },
@@ -1643,20 +1849,9 @@ function escapeHtml(s) {
 }
 
 function buildCaseStudies() {
-  const navList = document.getElementById('advertising-list');
   const container = document.getElementById('dynamic-views');
 
   advertising.forEach(cs => {
-    // Homepage nav link
-    const li = document.createElement('li');
-    li.className = 'nav-item';
-    li.innerHTML =
-      '<a class="nav-link" data-view="' + cs.slug + '">' +
-        '<span>' + escapeHtml(cs.title) + '</span>' +
-        '<span class="nav-link-arrow">&rarr;</span>' +
-      '</a>';
-    navList.appendChild(li);
-
     // The case study view
     const section = document.createElement('section');
     section.className = 'view case-study-view';
@@ -1698,13 +1893,47 @@ function buildCaseStudies() {
       '</div>'
     ).join('');
   });
+}
 
-  // "More work" trigger link
-  const moreLink = document.createElement('a');
-  moreLink.className = 'nav-link more-work-link';
-  moreLink.dataset.view = 'more-work';
-  moreLink.innerHTML = '<em>More work</em><span class="nav-link-arrow">&rarr;</span>';
-  navList.parentElement.appendChild(moreLink);
+/* Homepage strips. Widths use c_limit so Cloudinary never upscales. */
+function stripImg(url, w) {
+  return url.replace('/upload/', '/upload/f_auto,q_auto,c_limit,w_' + w + '/');
+}
+
+function stripPicture(art) {
+  if (!art || !art.cover) return '';
+  const mobile = art.coverMobile
+    ? '<source media="(max-width: 768px)" sizes="100vw" srcset="' +
+        stripImg(art.coverMobile, 800) + ' 800w, ' +
+        stripImg(art.coverMobile, 1200) + ' 1200w, ' +
+        stripImg(art.coverMobile, 1600) + ' 1600w">'
+    : '';
+  return '<picture>' + mobile +
+    '<img src="' + stripImg(art.cover, 1920) + '"' +
+      ' srcset="' + stripImg(art.cover, 800) + ' 800w, ' + stripImg(art.cover, 1280) + ' 1280w, ' + stripImg(art.cover, 1920) + ' 1920w, ' + stripImg(art.cover, 2560) + ' 2560w"' +
+      ' sizes="(min-width: 1921px) 1920px, 100vw" alt="" loading="lazy" decoding="async">' +
+    '</picture>';
+}
+
+function stripLink(view, label, art) {
+  return '<a class="strip strip-link" href="/' + view + '" data-view="' + view + '">' +
+    stripPicture(art) +
+    '<span class="strip-label">' + escapeHtml(label) + '</span>' +
+  '</a>';
+}
+
+function buildHomeStrips() {
+  // MOS band art (text and buttons are static markup)
+  const mos = document.getElementById('strip-mos');
+  if (mos && homeCovers.mos.cover) mos.insertAdjacentHTML('afterbegin', stripPicture(homeCovers.mos));
+
+  document.getElementById('strips-advertising').innerHTML =
+    advertising.map(cs => stripLink(cs.slug, cs.title, cs)).join('') +
+    stripLink('more-work', 'More Work', homeCovers.moreWork);
+
+  document.getElementById('strips-personal').innerHTML =
+    stripLink('photography', 'Photography', homeCovers.photography) +
+    stripLink('made-by-hand', 'Made By Hand', homeCovers.madeByHand);
 }
 
 function buildMoreWork() {
@@ -1773,14 +2002,21 @@ function resetAllPlayers() {
     if (mwGrid) mwGrid.style.display = 'grid';
     if (mwFrame) mwFrame.src = '';
   }
+  resetMosVideo();
 }
+
+let homeScrollY = 0;
 
 function showView(name, pushHistory = true) {
   resetAllPlayers();
+  const homeView = document.getElementById('view-home');
+  const wasHome = homeView.classList.contains('is-active');
+  if (wasHome && name !== 'home') homeScrollY = window.scrollY;
   document.querySelectorAll('.view').forEach(v => v.classList.remove('is-active'));
   const view = document.getElementById('view-' + name);
   if (view) view.classList.add('is-active');
-  window.scrollTo(0, 0);
+  // The home page is long now: coming back from a strip returns you to where you were.
+  window.scrollTo({ top: (name === 'home' && !wasHome) ? homeScrollY : 0, behavior: 'instant' });
 
   if (pushHistory) history.pushState({ view: name }, '', name === 'home' ? '/' : '/' + name);
 
@@ -1895,6 +2131,9 @@ function prevImage() {
    6. WIRE EVERYTHING UP
    ============================================================ */
 document.addEventListener('click', (e) => {
+  // Masters Of Sight walkthrough: press play to load the video
+  if (e.target.closest('.mc-video-play')) { playMosVideo(); return; }
+
   // Case study two-level back (must run before generic data-view)
   const back = e.target.closest('.header-back[data-back]');
   if (back) { caseStudyBack(back.dataset.back); return; }
@@ -1971,6 +2210,13 @@ document.getElementById('greeting').textContent = getGreeting();
 
   if (heroIframe && window.Vimeo) {
     heroPlayer = new Vimeo.Player(heroIframe);
+    // Match the hero box to the reel's real shape so there are never bars.
+    Promise.all([heroPlayer.getVideoWidth(), heroPlayer.getVideoHeight()])
+      .then(([w, h]) => {
+        const r = w / h;
+        if (r > 1.2 && r < 2.6) document.documentElement.style.setProperty('--hero-ratio', r.toFixed(4));
+      })
+      .catch(() => {});
     unmuteButton.addEventListener('click', (e) => {
       e.preventDefault();
       if (isMuted) {
@@ -2029,10 +2275,70 @@ window.addEventListener('popstate', (e) => {
 });
 
 /* ============================================================
+   MASTERS OF SIGHT CASE STUDY: assets and behavior
+   One image per slot. Each scales on every screen, no alternate crops.
+   To swap an image, change its URL here. A blank URL removes its slot.
+   ============================================================ */
+const mosAssets = {
+  logo:        'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792608228/MOS_LOGO_dcqyzq.png',
+  home:        'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792601683/Screenshot_2026-10-21_at_11.55.39_AM_bup96x.png',
+  search:      'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792609508/Screenshot_2026-10-21_at_3.04.27_PM_geqlcr.png',
+  master: [
+    'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792601693/Screenshot_2026-10-21_at_11.56.17_AM_innwwm.png',
+    'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792601698/Screenshot_2026-10-21_at_11.56.39_AM_kb37qb.png',
+    'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792601703/Screenshot_2026-10-21_at_11.57.48_AM_ngqbjc.png'
+  ],
+  ifYouLike:   'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792609809/Screenshot_2026-10-21_at_3.09.54_PM_l3skgb.png',
+  board:       'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792601678/Layer_1_be2kfy.png',
+  videoPoster: 'https://res.cloudinary.com/dx8kswwgb/image/upload/v1792609923/thumb-2_fp1fm8.jpg',
+  videoId:     '1238081986'
+};
+
+const mcKinds = {
+  wide:  { widths: [800, 1280, 1920, 2560], sizes: '(min-width: 1300px) 1200px, 100vw' },
+  third: { widths: [600, 900, 1280],        sizes: '(min-width: 769px) 390px, 100vw' },
+  logo:  { widths: [600, 1000, 1400],       sizes: '(min-width: 700px) 560px, 100vw' }
+};
+
+let mosVideoHTML = '';
+
+function buildMosPage() {
+  document.querySelectorAll('#view-masters-of-sight img[data-mc]').forEach(img => {
+    const key = img.dataset.mc;
+    const url = key === 'master' ? mosAssets.master[parseInt(img.dataset.i, 10)] : mosAssets[key];
+    if (!url) { (key === 'master' ? img : (img.closest('figure') || img)).remove(); return; }
+    const k = mcKinds[img.dataset.kind] || mcKinds.wide;
+    img.src = stripImg(url, k.widths[1]);
+    img.srcset = k.widths.map(w => stripImg(url, w) + ' ' + w + 'w').join(', ');
+    img.sizes = k.sizes;
+  });
+  const box = document.getElementById('mcVideo');
+  if (box) mosVideoHTML = box.innerHTML;
+}
+
+/* The walkthrough loads only when someone presses play. */
+function playMosVideo() {
+  const box = document.getElementById('mcVideo');
+  if (!box) return;
+  box.innerHTML =
+    '<iframe src="https://player.vimeo.com/video/' + mosAssets.videoId + '?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1"' +
+    ' allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen' +
+    ' referrerpolicy="strict-origin-when-cross-origin" frameborder="0" title="Masters Of Sight walkthrough"></iframe>';
+}
+
+/* Leaving the page puts the poster back, which also stops the audio. */
+function resetMosVideo() {
+  const box = document.getElementById('mcVideo');
+  if (box && mosVideoHTML && box.querySelector('iframe')) box.innerHTML = mosVideoHTML;
+}
+
+/* ============================================================
    9. GO
    ============================================================ */
 buildCaseStudies();
 buildMoreWork();
+buildHomeStrips();
+buildMosPage();
 buildGallery();
 buildWoodGallery();
 
