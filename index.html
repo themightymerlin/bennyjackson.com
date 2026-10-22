@@ -562,7 +562,8 @@
       transform: translateX(-50%);
       z-index: 3;
       text-align: center;
-      animation: bounce 2s infinite;
+      pointer-events: none;
+      animation: bounce 2s 2, hintFade 1s ease 4s forwards;
     }
 
     .scroll-hint-text {
@@ -582,6 +583,19 @@
     @keyframes bounce {
       0%, 100% { transform: translateX(-50%) translateY(0); }
       50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    @keyframes hintFade {
+      from { opacity: 1; }
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    @media (max-width: 768px), (hover: none) {
+      .scroll-hint { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scroll-hint { animation: hintFade 1s ease 4s forwards; }
     }
 
     /* ── FOOTER ── */
