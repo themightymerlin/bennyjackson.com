@@ -27,8 +27,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://player.vimeo.com">
+  <link rel="preconnect" href="https://i.vimeocdn.com">
+  <link rel="preconnect" href="https://f.vimeocdn.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <script src="https://player.vimeo.com/api/player.js"></script>
+  <script async src="https://player.vimeo.com/api/player.js"></script>
 
   <style>
     *, *::before, *::after {
@@ -318,6 +321,20 @@
       transform: translate(-50%, -50%);
       border: 0;
       display: block;
+      z-index: 0;
+    }
+
+    .hero-poster {
+      position: absolute;
+      inset: 0;
+      background: #0a0a0a url(https://res.cloudinary.com/dx8kswwgb/image/upload/v1792673011/single_frame_zkdjnr.png) center / cover no-repeat;
+      z-index: 1;
+      transition: opacity 0.6s ease;
+    }
+
+    .hero-poster.is-hidden {
+      opacity: 0;
+      pointer-events: none;
     }
 
     /* Past 1920px the reel fades into the page like the strips do. */
@@ -1393,9 +1410,10 @@
   <!-- HERO -->
   <section class="hero-section" id="heroSection">
     <div class="hero-video-container">
+      <div class="hero-poster" id="heroPoster"></div>
       <iframe
         id="heroIframe"
-        src="https://player.vimeo.com/video/1200811538?autoplay=1&badge=0&autopause=0&muted=1&controls=0&loop=1&player_id=0&app_id=58479"
+        src="https://player.vimeo.com/video/1200811538?autoplay=1&badge=0&autopause=0&muted=1&controls=0&loop=1&player_id=0&app_id=58479&playsinline=1&dnt=1"
         frameborder="0"
         allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
         referrerpolicy="strict-origin-when-cross-origin"
@@ -2216,14 +2234,22 @@ document.getElementById('greeting').textContent = getGreeting();
 
 (function setupHero() {
   const heroIframe = document.getElementById('heroIframe');
+  const heroPoster = document.getElementById('heroPoster');
   const unmuteButton = document.getElementById('unmuteButton');
   const volumeIcon = document.getElementById('volumeIcon');
   const offIcon = 'https://res.cloudinary.com/dx8kswwgb/image/upload/f_auto,q_auto,w_80/v1781298456/off_azlk8m.png';
   const onIcon = 'https://res.cloudinary.com/dx8kswwgb/image/upload/f_auto,q_auto,w_80/v1781298458/on_uxu72e.png';
   let isMuted = true;
 
-  if (heroIframe && window.Vimeo) {
+  function initPlayer() {
+    if (!heroIframe || !window.Vimeo) return;
     heroPlayer = new Vimeo.Player(heroIframe);
+
+    // Drop the poster once real frames are on screen.
+    heroPlayer.on('playing', () => {
+      if (heroPoster) heroPoster.classList.add('is-hidden');
+    });
+
     // Match the hero box to the reel's real shape so there are never bars.
     Promise.all([heroPlayer.getVideoWidth(), heroPlayer.getVideoHeight()])
       .then(([w, h]) => {
@@ -2231,6 +2257,20 @@ document.getElementById('greeting').textContent = getGreeting();
         if (r > 1.2 && r < 2.6) document.documentElement.style.setProperty('--hero-ratio', r.toFixed(4));
       })
       .catch(() => {});
+
+    heroPlayer.ready().then(() => {
+      try { heroPlayer.setQuality('720p').catch(() => {}); } catch (e) {}
+      heroPlayer.play().catch(() => {
+        // Autoplay blocked: retry once on the first user gesture.
+        const events = ['touchstart', 'click', 'scroll'];
+        const retry = () => {
+          events.forEach(ev => window.removeEventListener(ev, retry));
+          heroPlayer.play().catch(() => {});
+        };
+        events.forEach(ev => window.addEventListener(ev, retry, { passive: true }));
+      });
+    });
+
     unmuteButton.addEventListener('click', (e) => {
       e.preventDefault();
       if (isMuted) {
@@ -2248,6 +2288,10 @@ document.getElementById('greeting').textContent = getGreeting();
       }
     });
   }
+
+  // player.js loads async: init now if it is ready, otherwise on window load.
+  if (window.Vimeo) initPlayer();
+  else window.addEventListener('load', initPlayer);
 })();
 
 /* Fade out scroll hint on scroll */
