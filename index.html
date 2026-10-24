@@ -1681,7 +1681,25 @@
 
 <script>
 function cld(url, w) {
-  return url.replace('/upload/', '/upload/f_auto,q_auto' + (w ? ',w_' + w : '') + '/');
+  if (typeof url !== 'string') return url;
+  if (url.indexOf('res.cloudinary.com') === -1 || url.indexOf('/upload/') === -1) return url;
+  if (/\.(gif|mp4|mov|webm)(\?|#|$)/i.test(url) || url.indexOf('/video/upload/') !== -1) return url;
+  var marker = '/upload/';
+  var at = url.indexOf(marker) + marker.length;
+  var head = url.slice(0, at);
+  var rest = url.slice(at);
+  var slash = rest.indexOf('/');
+  var seg = slash === -1 ? rest : rest.slice(0, slash);
+  if (/^v\d+$/.test(seg) || slash === -1) {
+    return head + 'f_auto,q_auto' + (w ? ',w_' + w + ',c_limit' : '') + '/' + rest;
+  }
+  if (!w) return url;
+  var parts = seg.split(',');
+  var hasW = parts.some(function (p) { return /^w_/.test(p); });
+  var hasC = parts.some(function (p) { return /^c_/.test(p); });
+  if (!hasW) seg += ',w_' + w;
+  if (!hasC) seg += ',c_limit';
+  return head + seg + rest.slice(slash);
 }
 
 /* ============================================================
@@ -2116,7 +2134,7 @@ function buildGallery() {
   const grid = document.getElementById('galleryGrid');
   grid.innerHTML = photos.map((src, i) =>
     '<div class="gallery-item" data-photo="' + i + '">' +
-      '<img src="' + cld(src, 700) + '" alt="Photo ' + (i + 1) + '" loading="lazy">' +
+      '<img src="' + (typeof cld === 'function' ? cld(src, 800) : src) + '" alt="Photo ' + (i + 1) + '" loading="lazy" decoding="async">' +
     '</div>'
   ).join('');
   document.getElementById('totalCount').textContent = photos.length;
@@ -2127,7 +2145,7 @@ function buildWoodGallery() {
   if (!grid) return;
   grid.innerHTML = woodPhotos.map((src, i) =>
     '<div class="gallery-item" data-woodphoto="' + i + '">' +
-      '<img src="' + cld(src, 700) + '" alt="Woodworking ' + (i + 1) + '" loading="lazy">' +
+      '<img src="' + (typeof cld === 'function' ? cld(src, 800) : src) + '" alt="Woodworking ' + (i + 1) + '" loading="lazy" decoding="async">' +
     '</div>'
   ).join('');
 }
@@ -2135,7 +2153,7 @@ function buildWoodGallery() {
 function openLightbox(index, photoSet = photos) {
   currentImageIndex = index;
   currentPhotoSet = photoSet;
-  document.getElementById('lightboxImg').src = cld(photoSet[index], 2000);
+  document.getElementById('lightboxImg').src = typeof cld === 'function' ? cld(photoSet[index], 2400) : photoSet[index];
   document.getElementById('currentIndex').textContent = index + 1;
   document.getElementById('totalCount').textContent = photoSet.length;
   document.getElementById('lightbox').classList.add('active');
@@ -2149,13 +2167,13 @@ function closeLightbox() {
 
 function nextImage() {
   currentImageIndex = (currentImageIndex + 1) % currentPhotoSet.length;
-  document.getElementById('lightboxImg').src = cld(currentPhotoSet[currentImageIndex], 2000);
+  document.getElementById('lightboxImg').src = typeof cld === 'function' ? cld(currentPhotoSet[currentImageIndex], 2400) : currentPhotoSet[currentImageIndex];
   document.getElementById('currentIndex').textContent = currentImageIndex + 1;
 }
 
 function prevImage() {
   currentImageIndex = (currentImageIndex - 1 + currentPhotoSet.length) % currentPhotoSet.length;
-  document.getElementById('lightboxImg').src = cld(currentPhotoSet[currentImageIndex], 2000);
+  document.getElementById('lightboxImg').src = typeof cld === 'function' ? cld(currentPhotoSet[currentImageIndex], 2400) : currentPhotoSet[currentImageIndex];
   document.getElementById('currentIndex').textContent = currentImageIndex + 1;
 }
 
