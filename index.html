@@ -549,6 +549,38 @@
       .strip-mos > picture { position: absolute; inset: 0; }
     }
 
+    /* GRAIN START
+       Fixed film-grain overlay on body::after. No markup, no file, no animation.
+       z-index 400 keeps it under the nav (500), menu overlay (590) and lightbox (1000). */
+    @media (min-width: 1921px) {
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 400;
+        pointer-events: none;
+        opacity: 0.05;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 200px 200px;
+      }
+    }
+    /* GRAIN END */
+
+    /* WASH START
+       Faint accent glow anchored off the left and right edges, fixed to the
+       viewport. It paints on the page background, so media and text sit on top. */
+    @media (min-width: 1921px) {
+      body {
+        background-color: var(--bg);
+        background-image:
+          radial-gradient(ellipse 55vw 90vh at -8% 28%, rgba(74, 231, 231, 0.05), transparent 70%),
+          radial-gradient(ellipse 55vw 90vh at 108% 78%, rgba(74, 231, 231, 0.04), transparent 70%);
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+      }
+    }
+    /* WASH END */
+
     /* ── SCROLL HINT ── */
     .scroll-hint {
       position: absolute;
