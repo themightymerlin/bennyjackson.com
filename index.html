@@ -337,25 +337,12 @@
       pointer-events: none;
     }
 
-    /* Past 1920px the reel fades into the page like the strips do. */
-    @media (min-width: 1921px) {
-      .hero-video-container, .hero-overlay {
-        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
-        mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
-      }
-    }
-
     .hero-overlay {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0.3) 0%,
-        rgba(0, 0, 0, 0) 50%,
-        rgba(10, 10, 10, 0.6) 100%
-      );
+      background: none;
       z-index: 2;
     }
 
@@ -429,7 +416,7 @@
 
     /* ── HOME STRIPS ──
        Full-bleed 9:2 bands. The stack is capped at 1920px; past that the
-       sides fade to the page background so big monitors never see a
+       sides are clean edges so big monitors never see a
        stretched (soft) image. Text sizes use cqw (relative to the strip),
        so labels scale with the strip and stay aligned to the capped width. */
     :root { --strip-gap: clamp(8px, 0.9vw, 17px); --gold: #e6c27e; }
@@ -442,15 +429,6 @@
       gap: var(--strip-gap);
     }
     .strip-group { display: grid; gap: var(--strip-gap); }
-
-    /* The fade is applied to the art (and its scrims) only, so labels and
-       buttons stay fully visible at the edge of the capped width. */
-    @media (min-width: 1921px) {
-      .strip picture, .strip::before, .strip::after {
-        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
-        mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
-      }
-    }
 
     .strip {
       position: relative;
@@ -772,8 +750,8 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(to top, rgba(10, 10, 10, 0.95), transparent);
-      padding: 32px 24px 16px;
+      background: rgba(10, 10, 10, 0.7);
+      padding: 16px 24px;
       font-family: 'DM Sans', sans-serif;
       font-size: 14px;
       font-weight: 400;
@@ -895,8 +873,8 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(to top, rgba(10, 10, 10, 0.95), transparent);
-      padding: 16px 12px 8px;
+      background: rgba(10, 10, 10, 0.7);
+      padding: 8px 12px;
       font-family: 'DM Sans', sans-serif;
       font-size: 11px;
       font-weight: 400;
